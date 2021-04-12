@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Playlist } from '../../model/Playlist'
 
 interface Props {
-    playlist: Playlist;
+    playlist: Playlist
+    onCancel(value: 'details' | 'form'): void
+    onSave(draft: Playlist): void
 }
 
-
-export const PlaylistEditForm = ({ playlist }: Props) => {
+export const PlaylistEditForm = ({ playlist, onCancel, onSave }: Props) => {
     const [message, setMessage] = useState('')
     const [acceptNew, setAcceptNew] = useState(false)
 
@@ -14,6 +15,17 @@ export const PlaylistEditForm = ({ playlist }: Props) => {
     const [name, setName] = useState(playlist.name)
     const [isPublic, setIsPublic] = useState(playlist.public)
     const [description, setDescription] = useState(playlist.description)
+
+    const updatePlaylist = () => {
+        const data = {
+            id: playlistId,
+            name,
+            public: isPublic,
+            description,
+        }
+
+        onSave(data);
+    }
 
     useEffect(() => {
         if (playlistId !== playlist.id) {
@@ -53,12 +65,23 @@ export const PlaylistEditForm = ({ playlist }: Props) => {
                 <textarea className="form-control" value={description} onChange={e => setDescription(e.target.value)} ></textarea>
             </div>
 
-            <button className="btn btn-danger">Cancel</button>
-            <button className="btn btn-success">Save</button>
+            <div className="d-flex justify-content-between">
+                <button
+                    className="btn btn-danger"
+                    onClick={() => { onCancel('details') }}
+                >
+                    Cancel
+            </button>
+                <button
+                    className="btn btn-success"
+                    onClick={() => updatePlaylist()}
+                >
+                    Save
+            </button>
+            </div>
         </div>
     )
 }
-
 
 
 // const NameField = () => {

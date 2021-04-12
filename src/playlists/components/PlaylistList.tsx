@@ -1,23 +1,28 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Playlist } from '../../model/Playlist'
+import styles from './PlaylistList.module.css'
 
 interface Props {
     playlists: Playlist[]
     selectedId?: string
-    // setSelectedId(id: Playlist['id']): void
     onSelected(id: string): void
+    onSwitch(value: 'details'): void
 }
 
-export const PlaylistList = ({ playlists, selectedId, onSelected }: Props) => {
+export const PlaylistList = ({ playlists, selectedId, onSelected, onSwitch }: Props) => {
 
     return (
         <div>
             <div className="list-group">
                 {playlists.map((playlist, index) =>
-                    <div className={`list-group-item ${selectedId === playlist.id ? 'active' : ''}`}
-                        onClick={() => onSelected(playlist.id)}
-
-                        key={playlist.id}>
+                    <div
+                        key={playlist.id}
+                        className={`list-group-item ${styles.cursorPointer} ${selectedId === playlist.id ? 'active' : ''}`}
+                        onClick={() => {
+                            onSelected(playlist.id);
+                            onSwitch('details');
+                        }}
+                    >
                         {playlist.name}
                     </div>
                 )}

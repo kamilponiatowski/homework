@@ -7,12 +7,12 @@ import { PlaylistList } from '../components/PlaylistList'
 
 interface Props { }
 
-const playlist = {
-    id: '123',
-    name: 'Placki',
-    public: true,
-    description: 'Lubie placki'
-}
+// const playlist = {
+//     id: '123',
+//     name: 'Placki',
+//     public: true,
+//     description: 'Lubie placki'
+// }
 
 const playlists: Playlist[] = [
     {
@@ -37,6 +37,7 @@ const playlists: Playlist[] = [
 ]
 
 export const PlaylistsView = (props: Props) => {
+    const [myPlaylists, setMyPlaylists] = useState<Playlist[]>(playlists)
     const [forceUpdate, setForceUpdate] = useState(Date.now())
     const [selectedId, setSelectedId] = useState<string | undefined>('234')
     const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | undefined>()
@@ -53,44 +54,55 @@ export const PlaylistsView = (props: Props) => {
         - Zapisana playlista jest widoczna na liscie i w details!
     */
 
-    const edit = () => {/*  */ }
-    const cancel = () => {/*  */ }
+    const edit = (value: 'details' | 'form') => { setMode(value) }
+    const cancel = (value: 'details' | 'form') => { setMode(value) }
     const save = (draft: Playlist) => {
-        /* update playlistS!   */
-        const index = playlists.findIndex(p => p.id === draft.id)
-        if (index !== -1) {
-            playlists[index] = draft /// WRONG!! Mutable Code!
+        const index = myPlaylists!.findIndex(p => p.id === draft.id)
+        if (~index) {
+            // playlists[index] = draft /// WRONG!! Mutable Code!
+            const myNewPlaylist = JSON.parse(JSON.stringify(myPlaylists));
+            myNewPlaylist!.splice(index, 1);
+            myNewPlaylist!.splice(index, 0, draft);
+            setMyPlaylists(myNewPlaylist);
+            setMode('details');
         }
     }
 
 
     useEffect(() => {
-        setSelectedPlaylist(playlists.find(p => p.id == selectedId))
-
-    }, [selectedId, forceUpdate])
+        setSelectedPlaylist(myPlaylists.find(p => p.id === selectedId))
+    }, [selectedId, forceUpdate, myPlaylists])
 
     return (
         <div>
             <h4>PlaylistsView</h4>
 
-            {/* .row>.col*2 */}
-
             <div className="row">
                 <div className="col">
                     <PlaylistList
                         onSelected={id => { setSelectedId(id) }}
-                        playlists={playlists}
-                        selectedId={selectedId} />
+                        playlists={myPlaylists}
+                        selectedId={selectedId}
+                        onSwitch={(value) => { setMode(value) }}
+                    />
 
-
-                    {/* <input type="text" value={zmienna}
-                        onChange={event => setCostam(event.costam) }/> */}
                 </div>
                 <div className="col">
 
-                    {selectedPlaylist && mode === 'details' && <PlaylistDetails playlist={selectedPlaylist} />}
+                    {selectedPlaylist && mode === 'details' &&
+                        <PlaylistDetails
+                            playlist={selectedPlaylist}
+                            onEdit={edit}
+                        />
+                    }
 
-                    {selectedPlaylist && mode === 'form' && <PlaylistEditForm playlist={selectedPlaylist} />}
+                    {selectedPlaylist && mode === 'form' &&
+                        <PlaylistEditForm
+                            playlist={selectedPlaylist}
+                            onCancel={cancel}
+                            onSave={save}
+                        />
+                    }
                 </div>
             </div>
         </div>

@@ -2,14 +2,13 @@ import React from 'react'
 import { Playlist } from '../../model/Playlist'
 import styles from './PlaylistDetails.module.css'
 
-// console.log(styles)
-
 interface Props {
-    playlist: Playlist
+    playlist: Playlist,
+    onEdit(value: 'details' | 'form'): void
 }
 
 
-export const PlaylistDetails: React.FC<Props> = ({ playlist }) => {
+export const PlaylistDetails: React.FC<Props> = ({ playlist, onEdit }: Props) => {
     return (
         <div>
             <dl data-playlist-id={playlist.id}>
@@ -25,8 +24,13 @@ export const PlaylistDetails: React.FC<Props> = ({ playlist }) => {
                 <dt>Description:</dt>
                 <dd>{playlist.description}</dd>
             </dl>
-            
-            <button className="btn btn-edit">Edit</button>
+
+            <button
+                className="btn btn-primary"
+                onClick={() => onEdit('form')}
+            >
+                Edit
+            </button>
         </div>
     )
 }
