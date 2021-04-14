@@ -35,6 +35,7 @@ export const PlaylistsView = (props: Props) => {
     const [mode, setMode] = useState<'details' | 'form'>('details')
     const [playlists, setPlaylists] = useState<Playlist[]>(data)
     const [newPlaylist, setNewPlaylist] = useState<Playlist | undefined>()
+    const [showInfoToSelectPlaylist, setShowInfoToSelectPlaylist] = useState<Boolean>(true)
 
     /* TODO:
 
@@ -58,24 +59,33 @@ export const PlaylistsView = (props: Props) => {
     */
 
     const edit = () => {
-        setMode('form')
+        setMode('form');
+        setShowInfoToSelectPlaylist(false);
     }
     const cancel = () => {
-        setMode('details')
+        setMode('details');
+        setShowInfoToSelectPlaylist(false);
     }
     const save = (draft: Playlist) => {
         setMode('details')
         setPlaylists(playlists.map(p => p.id === draft.id ? draft : p))
     }
+    const selectPlaylist = (id: string) => {
+        setSelectedId(id);
+        setShowInfoToSelectPlaylist(false);
+    }
     const createNewPlaylist = () => {
-        setSelectedId(undefined);
-        setSelectedPlaylist(undefined);
+        setShowInfoToSelectPlaylist(false);
         // setNewPlaylist();
+    }
+    const deletePlaylist = (playlistId: Number) => {
+        setPlaylists(playlists.filter(p => +p.id !== playlistId));
     }
 
     useEffect(() => {
-        setSelectedPlaylist(playlists.find(p => p.id == selectedId))
-    }, [selectedId, playlists])
+        setSelectedPlaylist(playlists.find(p => p.id === selectedId));
+        setShowInfoToSelectPlaylist(selectedPlaylist?.id ? false : true);
+    }, [selectedId, selectedPlaylist, playlists])
 
     return (
         <div>
@@ -84,9 +94,11 @@ export const PlaylistsView = (props: Props) => {
             <div className="row">
                 <div className="col">
                     <PlaylistList
-                        onSelected={id => { setSelectedId(id) }}
+                        onSelected={selectPlaylist}
                         playlists={playlists}
-                        selectedId={selectedId} />
+                        selectedId={selectedId}
+                        onDeletePlaylist={deletePlaylist}
+                    />
 
                     <button
                         className="btn btn-info btn-block mt-4"
@@ -109,7 +121,7 @@ export const PlaylistsView = (props: Props) => {
                             cancel={cancel}
                         />
                     }
-                    {!selectedId && !selectedPlaylist &&
+                    {showInfoToSelectPlaylist &&
                         <div className="alert alert-info">Please select playlist</div>
                     }
                 </div>
