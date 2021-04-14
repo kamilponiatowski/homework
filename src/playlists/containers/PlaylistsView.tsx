@@ -79,7 +79,11 @@ export const PlaylistsView = (props: Props) => {
         setShowInfoToSelectPlaylist(false);
         setSelectedId(undefined);
         setMode('new');
-        // setNewPlaylist();
+    }
+    const addNewPlaylist = (newPlaylist: Playlist) => {
+        setPlaylists([...playlists, newPlaylist]);
+        setSelectedId(newPlaylist.id);
+        setMode('details');
     }
     const deletePlaylist = (playlistId: Number) => {
         setPlaylists(playlists.filter(p => +p.id !== playlistId));
@@ -88,11 +92,7 @@ export const PlaylistsView = (props: Props) => {
         setMode('default');
         setShowInfoToSelectPlaylist(true);
     }
-    const addNewPlaylist = (newPlaylist: Playlist) => {
-        setPlaylists([...playlists, newPlaylist]);
-        setSelectedId(newPlaylist.id);
-        setMode('details');
-    }
+
 
     useEffect(() => {
         setSelectedPlaylist(playlists.find(p => p.id === selectedId));
@@ -106,9 +106,9 @@ export const PlaylistsView = (props: Props) => {
             <div className="row">
                 <div className="col">
                     <PlaylistList
-                        onSelected={selectPlaylist}
                         playlists={playlists}
                         selectedId={selectedId}
+                        onSelected={selectPlaylist}
                         onDeletePlaylist={deletePlaylist}
                     />
 
@@ -122,26 +122,26 @@ export const PlaylistsView = (props: Props) => {
                 <div className="col">
                     {selectedPlaylist && mode === 'details' &&
                         <PlaylistDetails
-                            edit={edit}
+                            onEdit={edit}
                             playlist={selectedPlaylist}
                         />
                     }
                     {selectedPlaylist && mode === 'form' &&
                         <PlaylistEditForm
-                            save={save}
                             playlist={selectedPlaylist}
-                            cancel={cancel}
+                            onCancel={cancel}
+                            onSave={save}
                         />
                     }
                     {mode === 'new' &&
                         <PlaylistCreateNewPlaylist
+                            onCancel={backToMainView}
                             onAddPlaylist={(playlist) => { addNewPlaylist(playlist) }}
-                            cancel={backToMainView}
                         />
 
                     }
                     {showInfoToSelectPlaylist && mode !== 'new' &&
-                        <div className="alert alert-info">Please select playlist</div>
+                        <div className="alert alert-info">Please select playlist or create a new one</div>
                     }
                 </div>
             </div>

@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import { Playlist } from '../../model/Playlist'
 
 interface Props {
-    // playlist: Playlist
-    cancel: () => void
+    onCancel: () => void
     onAddPlaylist: (newPlaylist: Playlist) => void
 }
 
-export const PlaylistCreateNewPlaylist = ({ cancel, onAddPlaylist }: Props) => {
+export const PlaylistCreateNewPlaylist = ({ onCancel, onAddPlaylist }: Props) => {
     // const [message, setMessage] = useState('')
     // const [acceptNew, setAcceptNew] = useState(false)
 
@@ -50,9 +49,20 @@ export const PlaylistCreateNewPlaylist = ({ cancel, onAddPlaylist }: Props) => {
                 <label>Description</label>
                 <textarea className="form-control" value={description} onChange={e => setDescription(e.target.value)} ></textarea>
             </div>
-
-            <button className="btn btn-danger" onClick={cancel}>Cancel</button>
-            <button className="btn btn-success" onClick={addNewPlaylist}>Add</button>
+            <div className="d-flex justify-content-between">
+                <button
+                    className="btn btn-danger"
+                    onClick={onCancel}
+                >
+                    Cancel
+                </button>
+                <button
+                    className="btn btn-success"
+                    onClick={addNewPlaylist}
+                >
+                    Add
+                </button>
+            </div>
         </div>
     )
 }

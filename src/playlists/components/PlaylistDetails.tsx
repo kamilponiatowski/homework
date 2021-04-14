@@ -3,11 +3,11 @@ import { Playlist } from '../../model/Playlist'
 import styles from './PlaylistDetails.module.css'
 
 interface Props {
-    playlist: Playlist;
-    edit: React.MouseEventHandler<HTMLButtonElement>;
+    playlist: Playlist
+    onEdit: () => void
 }
 
-export const PlaylistDetails: React.FC<Props> = ({ playlist, edit }) => {
+export const PlaylistDetails: React.FC<Props> = ({ playlist, onEdit }: Props) => {
     return (
         <div>
             <dl data-playlist-id={playlist.id}>
@@ -23,8 +23,13 @@ export const PlaylistDetails: React.FC<Props> = ({ playlist, edit }) => {
                 <dt>Description:</dt>
                 <dd>{playlist.description}</dd>
             </dl>
-            
-            <button className="btn btn-danger" onClick={edit}>Edit</button>
+
+            <button
+                className="btn btn-danger"
+                onClick={onEdit}
+            >
+                Edit
+            </button>
         </div>
     )
 }
