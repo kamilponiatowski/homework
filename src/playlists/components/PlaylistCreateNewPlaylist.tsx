@@ -1,0 +1,59 @@
+import React, { useState } from 'react'
+import { Playlist } from '../../model/Playlist'
+
+interface Props {
+    // playlist: Playlist
+    cancel: () => void
+    onAddPlaylist: (newPlaylist: Playlist) => void
+}
+
+export const PlaylistCreateNewPlaylist = ({ cancel, onAddPlaylist }: Props) => {
+    // const [message, setMessage] = useState('')
+    // const [acceptNew, setAcceptNew] = useState(false)
+
+    const [playlistId] = useState<string>(~~(Math.random() * 1000000) + '')
+    const [name, setName] = useState<string>('')
+    const [isPublic, setIsPublic] = useState<boolean>(false)
+    const [description, setDescription] = useState<string>('')
+
+    const addNewPlaylist = () => {
+        if (!playlistId || !name || !description) {
+            alert('Uzupełnij wszystkie pola by dodać playlistę');
+            return;
+        }
+        const newPlaylist = {
+            id: playlistId,
+            name,
+            public: isPublic,
+            description,
+        }
+        onAddPlaylist(newPlaylist);
+    }
+
+    return (
+        <div>
+            <h3>Create New Playlist</h3>
+
+            <div className="form-group">
+                <label>Name:</label>
+                <input type="text" className="form-control" value={name}
+                    onChange={event => setName(event.target.value)} />
+                <p>{name.length} / 170</p>
+            </div>
+
+            <div className="form-check">
+                <label><input type="checkbox" className="form-check-input" checked={isPublic}
+                    onChange={event => setIsPublic(event.target.checked)} /> Public </label>
+            </div>
+
+            <div className="form-group">
+                <label>Description</label>
+                <textarea className="form-control" value={description} onChange={e => setDescription(e.target.value)} ></textarea>
+            </div>
+
+            <button className="btn btn-danger" onClick={cancel}>Cancel</button>
+            <button className="btn btn-success" onClick={addNewPlaylist}>Add</button>
+        </div>
+    )
+}
+

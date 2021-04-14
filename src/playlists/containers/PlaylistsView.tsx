@@ -4,6 +4,7 @@ import { Playlist } from '../../model/Playlist'
 import { PlaylistDetails } from '../components/PlaylistDetails'
 import { PlaylistEditForm } from '../components/PlaylistEditForm'
 import { PlaylistList } from '../components/PlaylistList'
+import { PlaylistCreateNewPlaylist } from '../components/PlaylistCreateNewPlaylist'
 
 interface Props { }
 
@@ -32,9 +33,8 @@ const data: Playlist[] = [
 export const PlaylistsView = (props: Props) => {
     const [selectedId, setSelectedId] = useState<string | undefined>()
     const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | undefined>()
-    const [mode, setMode] = useState<'details' | 'form'>('details')
+    const [mode, setMode] = useState<'details' | 'form' | 'new' | 'default'>('default')
     const [playlists, setPlaylists] = useState<Playlist[]>(data)
-    const [newPlaylist, setNewPlaylist] = useState<Playlist | undefined>()
     const [showInfoToSelectPlaylist, setShowInfoToSelectPlaylist] = useState<Boolean>(true)
 
     /* TODO:
@@ -71,15 +71,27 @@ export const PlaylistsView = (props: Props) => {
         setPlaylists(playlists.map(p => p.id === draft.id ? draft : p))
     }
     const selectPlaylist = (id: string) => {
+        setMode('details');
         setSelectedId(id);
         setShowInfoToSelectPlaylist(false);
     }
     const createNewPlaylist = () => {
         setShowInfoToSelectPlaylist(false);
+        setSelectedId(undefined);
+        setMode('new');
         // setNewPlaylist();
     }
     const deletePlaylist = (playlistId: Number) => {
         setPlaylists(playlists.filter(p => +p.id !== playlistId));
+    }
+    const backToMainView = () => {
+        setMode('default');
+        setShowInfoToSelectPlaylist(true);
+    }
+    const addNewPlaylist = (newPlaylist: Playlist) => {
+        setPlaylists([...playlists, newPlaylist]);
+        setSelectedId(newPlaylist.id);
+        setMode('details');
     }
 
     useEffect(() => {
@@ -121,7 +133,14 @@ export const PlaylistsView = (props: Props) => {
                             cancel={cancel}
                         />
                     }
-                    {showInfoToSelectPlaylist &&
+                    {mode === 'new' &&
+                        <PlaylistCreateNewPlaylist
+                            onAddPlaylist={(playlist) => { addNewPlaylist(playlist) }}
+                            cancel={backToMainView}
+                        />
+
+                    }
+                    {showInfoToSelectPlaylist && mode !== 'new' &&
                         <div className="alert alert-info">Please select playlist</div>
                     }
                 </div>
