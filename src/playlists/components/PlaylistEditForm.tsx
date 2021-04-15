@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const PlaylistEditForm = ({ playlist, onCancel, onSave }: Props) => {
-    const [playlistId, setPlaylistId] = useState(playlist.id)
+    const [playlistId] = useState(playlist.id)
     const [name, setName] = useState(playlist.name)
     const [isPublic, setIsPublic] = useState(playlist.public)
     const [description, setDescription] = useState(playlist.description)

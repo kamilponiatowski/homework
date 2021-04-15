@@ -1,0 +1,28 @@
+{
+  "playlists": [
+    {
+      "id": 123,
+      "name": "Relaxing 😎",
+      "public": true,
+      "description": "Sleep Music with Rain Sounds"
+    },
+    {
+      "id": 234,
+      "name": "Supernatural 🤠",
+      "public": true,
+      "description": "moze polubię TypeScript?. 🚀"
+    },
+    {
+      "id": 345,
+      "name": "Magic 🦄",
+      "public": false,
+      "description": "albo wszystko polubię co mi tam 😅💖"
+    },
+    {
+      "id": "150785",
+      "name": "dwa321",
+      "public": false,
+      "description": "daw232132121312"
+    }
+  ]
+}

@@ -7,9 +7,6 @@ interface Props {
 }
 
 export const PlaylistCreateNewPlaylist = ({ onCancel, onAddPlaylist }: Props) => {
-    // const [message, setMessage] = useState('')
-    // const [acceptNew, setAcceptNew] = useState(false)
-
     const [playlistId] = useState<string>(~~(Math.random() * 1000000) + '')
     const [name, setName] = useState<string>('')
     const [isPublic, setIsPublic] = useState<boolean>(false)
