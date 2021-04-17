@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { validateForm } from '../../helpers/validateForm'
 import { Playlist } from '../../model/Playlist'
 
 interface Props {
@@ -14,7 +15,8 @@ export const PlaylistCreateNewPlaylist = ({ onCancel, onAddPlaylist }: Props) =>
 
     const addNewPlaylist = () => {
         if (!playlistId || !name || !description) {
-            alert('Uzupełnij wszystkie pola by dodać playlistę');
+            // alert('Uzupełnij wszystkie pola by dodać playlistę');
+            validateForm();
             return;
         }
         const newPlaylist = {
@@ -32,7 +34,7 @@ export const PlaylistCreateNewPlaylist = ({ onCancel, onAddPlaylist }: Props) =>
 
             <div className="form-group">
                 <label>Name:</label>
-                <input type="text" className="form-control" value={name}
+                <input type="text" className="form-control" value={name} data-to-validate="4"
                     onChange={event => setName(event.target.value)} />
                 <p>{name.length} / 170</p>
             </div>
@@ -44,7 +46,7 @@ export const PlaylistCreateNewPlaylist = ({ onCancel, onAddPlaylist }: Props) =>
 
             <div className="form-group">
                 <label>Description</label>
-                <textarea className="form-control" value={description} onChange={e => setDescription(e.target.value)} ></textarea>
+                <textarea className="form-control" value={description} data-to-validate="10" onChange={e => setDescription(e.target.value)} ></textarea>
             </div>
             <div className="d-flex justify-content-between">
                 <button

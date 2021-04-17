@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { validateForm } from '../../helpers/validateForm'
 import { Playlist } from '../../model/Playlist'
 
 interface Props {
@@ -14,6 +15,10 @@ export const PlaylistEditForm = ({ playlist, onCancel, onSave }: Props) => {
     const [description, setDescription] = useState(playlist.description)
 
     const updatePlaylist = () => {
+        if (!playlistId || !name || !description) {
+            validateForm();
+            return;
+        }
         onSave({
             id: playlistId,
             name: name,
@@ -28,8 +33,13 @@ export const PlaylistEditForm = ({ playlist, onCancel, onSave }: Props) => {
 
             <div className="form-group">
                 <label>Name:</label>
-                <input type="text" className="form-control" value={name}
-                    onChange={event => setName(event.target.value)} />
+                <input
+                    type="text"
+                    className="form-control"
+                    value={name}
+                    data-to-validate="4"
+                    onChange={event => setName(event.target.value)}
+                />
                 <p>{name.length} / 170</p>
             </div>
 
@@ -40,7 +50,12 @@ export const PlaylistEditForm = ({ playlist, onCancel, onSave }: Props) => {
 
             <div className="form-group">
                 <label>Description</label>
-                <textarea className="form-control" value={description} onChange={e => setDescription(e.target.value)} ></textarea>
+                <textarea
+                    className="form-control"
+                    data-to-validate="10"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                ></textarea>
             </div>
             <div className="d-flex justify-content-between">
                 <button
