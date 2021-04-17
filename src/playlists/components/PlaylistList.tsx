@@ -17,7 +17,7 @@ export const PlaylistList = ({ playlists, selectedId, onSelected, onDeletePlayli
     }
 
     return (
-        <div>
+        <div id="playlist-list">
             <div className="list-group">
                 {playlists.map((playlist, index) =>
                     <div className={`list-group-item ${selectedId === playlist.id ? 'active' : ''}`}

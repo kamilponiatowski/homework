@@ -1,4 +1,6 @@
 // tsrafc
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 import React, { useEffect, useState } from 'react'
 import { Playlist } from '../../model/Playlist'
 import { PlaylistDetails } from '../components/PlaylistDetails'
@@ -21,7 +23,7 @@ export const PlaylistsView = (props: Props) => {
         setIsLoading(true);
         const playlists = await PlaylistService.getPlaylists();
         setPlaylists(playlists);
-        setIsLoading(false);
+        setTimeout(() => setIsLoading(false), 250)
     }
     const edit = () => {
         setMode('form');
@@ -61,7 +63,14 @@ export const PlaylistsView = (props: Props) => {
         setShowInfoToSelectPlaylist(true);
     }
     const deselectList = (e: any) => {
-        !e.composedPath().find((e: HTMLElement) => e.matches?.('#playlist-view')) && setSelectedId(undefined);
+        !e.composedPath().find((e: HTMLElement) => {
+            const deselect = (
+                e.matches?.('#playlist-list')
+                || e.matches?.('#playlist-edit-form')
+                || e.matches?.('#playlist-details')
+            )
+            return deselect;
+        }) && setSelectedId(undefined);
     }
 
     useEffect(() => {
@@ -79,6 +88,7 @@ export const PlaylistsView = (props: Props) => {
     }, [])
 
     const PlaylistListComponent = (
+        !isLoading &&
         <PlaylistList
             playlists={playlists}
             selectedId={selectedId}
@@ -112,30 +122,46 @@ export const PlaylistsView = (props: Props) => {
         />
     )
 
-    const showInfoToSelectPlaylistComponent = (
+    const CreateNewPlaylistButtonComponent = (
+        <button
+            className="btn btn-info btn-block mt-4"
+            onClick={createNewPlaylist}
+        >
+            Create New Playlist
+        </button>
+    )
+
+    const ShowInfoToSelectPlaylistComponent = (
         showInfoToSelectPlaylist && mode !== 'new' &&
         <div className="alert alert-info">Please select playlist or create a new one</div>
+    )
+    const LoaderComponent = (
+        isLoading &&
+        <div className="mx-auto">
+            <Loader
+                type="TailSpin"
+                color="#00BFFF"
+                height={80}
+                width={80}
+                timeout={3000}
+            />
+        </div>
     )
 
     return (
         <div id="playlist-view">
             <h4>PlaylistsView</h4>
             <div className="row">
-                <div className="col playlists-list">
+                <div className="col playlists-list d-flex flex-column justify-content-center">
                     {PlaylistListComponent}
-
-                    <button
-                        className="btn btn-info btn-block mt-4"
-                        onClick={createNewPlaylist}
-                    >
-                        Create New Playlist
-                    </button>
+                    {LoaderComponent}
+                    {CreateNewPlaylistButtonComponent}
                 </div>
                 <div className="col">
                     {PlaylistDetailsComponent}
                     {PlaylistEditFormComponent}
                     {PlaylistCreateNewPlaylistComponent}
-                    {showInfoToSelectPlaylistComponent}
+                    {ShowInfoToSelectPlaylistComponent}
                 </div>
             </div>
         </div>

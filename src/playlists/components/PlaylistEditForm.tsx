@@ -23,7 +23,7 @@ export const PlaylistEditForm = ({ playlist, onCancel, onSave }: Props) => {
     }
 
     return (
-        <div>
+        <div id="playlist-edit-form">
             <h3>PlaylistEditForm</h3>
 
             <div className="form-group">

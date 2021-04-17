@@ -27,7 +27,7 @@ export const PlaylistCreateNewPlaylist = ({ onCancel, onAddPlaylist }: Props) =>
     }
 
     return (
-        <div>
+        <div id="playlist-create-new-playlist">
             <h3>Create New Playlist</h3>
 
             <div className="form-group">

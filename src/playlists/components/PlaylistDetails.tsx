@@ -9,7 +9,7 @@ interface Props {
 
 export const PlaylistDetails: React.FC<Props> = ({ playlist, onEdit }: Props) => {
     return (
-        <div>
+        <div id="playlist-details">
             <dl data-playlist-id={playlist.id}>
                 <dt>Name:</dt>
 
