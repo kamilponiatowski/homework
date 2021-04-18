@@ -1,26 +1,24 @@
 import React from 'react'
 import { AlbumCard } from './AlbumCard'
+import { AlbumView } from '../../model/Search'
 
 interface Props {
-
+    albums: AlbumView[]
 }
 
-export const AlbumGrid = (props: Props) => {
+export const AlbumGrid = ({ albums }: Props) => {
+
+
     return (
         <div>
             <div className="row row-cols-1 row-cols-sm-4 no-gutters">
-                <div className="col mb-4">
-                    <AlbumCard />
-                </div>
-                <div className="col mb-4">
-                    <AlbumCard />
-                </div>
-                <div className="col mb-4">
-                    <AlbumCard />
-                </div>
-                <div className="col mb-4">
-                    <AlbumCard />
-                </div>
+                {albums.map((album, index) =>
+                    <div className="col mb-4">
+                        <AlbumCard
+                            album={album}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )
