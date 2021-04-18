@@ -7,9 +7,6 @@ interface Props {
 export const SearchForm = ({ onSearch }: Props) => {
     const [query, setQuery] = useState('')
 
-    const search = () => {
-        console.log(query)
-    }
     return (
         <div>
             <div className="input-group mb-3">
@@ -17,9 +14,10 @@ export const SearchForm = ({ onSearch }: Props) => {
                     type="text"
                     className="form-control"
                     placeholder="Search"
-                    onChange={event => setQuery(event.target.value)}
+                    onChange={e => setQuery(e.target.value)}
                 />
-                <button className="btn btn-outline-secondary" type="button" onClick={search}>Search</button>
+                {/* onKeyUp={e => e.code === 'Enter' && onSearch(query)} */}
+                <button className="btn btn-outline-secondary" type="button" onClick={onSearch(query)}>Search</button>
             </div>
         </div>
     )

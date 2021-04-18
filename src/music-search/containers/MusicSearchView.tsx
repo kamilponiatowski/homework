@@ -21,6 +21,7 @@ export const MusicSearchView = (props: Props) => {
 
     const searchAlbums = (query: string) => {
         console.log('Search :', query)
+        setAlbums(albumsMock)
     }
 
     return (
