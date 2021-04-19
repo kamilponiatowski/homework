@@ -71,6 +71,12 @@ export interface Artist {
     popularity: number;
     type: string;
     uri: string;
+    followers: Followers
+}
+
+export interface Followers {
+    href: string
+    total: number
 }
 
 export interface ExternalUrls {
