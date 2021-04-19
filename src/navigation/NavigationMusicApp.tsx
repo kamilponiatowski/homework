@@ -6,7 +6,7 @@ interface Props {
     onChangeTab: (newTab: string) => void
 }
 
-export default function NavigationMain({ onChangeTab, currentTab }: Props): ReactElement {
+export function NavigationMusicApp({ onChangeTab, currentTab }: Props): ReactElement {
     return (
         <ul className="nav nav-tabs mb-3">
             <li className="nav-item">

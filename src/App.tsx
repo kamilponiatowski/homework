@@ -4,7 +4,7 @@ import { PlaylistsView } from './playlists/containers/PlaylistsView';
 // npm i bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 import { MusicSearchView } from './music-search/containers/MusicSearchView';
-import NavigationMain from './navigation/NavigationMusicApp';
+import { NavigationMusicApp } from './navigation/NavigationMusicApp';
 
 function App() {
   const [tab, setTab] = useState<string>('albums') // albums, artists, playlists
@@ -17,7 +17,7 @@ function App() {
           <div className="col">
 
             <h1>MusicApp</h1>
-            <NavigationMain currentTab={tab} onChangeTab={(newTab: string) => setTab(newTab)} />
+            <NavigationMusicApp currentTab={tab} onChangeTab={(newTab: string) => setTab(newTab)} />
 
             {
               tab === 'playlists' &&
@@ -25,7 +25,7 @@ function App() {
             }
             {
               (tab === 'albums' || tab === 'artists') &&
-              <MusicSearchView />
+              <MusicSearchView tab={tab} />
             }
           </div>
         </div>

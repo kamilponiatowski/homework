@@ -4,7 +4,9 @@ import { AlbumGrid } from '../components/AlbumGrid'
 import { SearchForm } from '../components/SearchForm'
 import { useSearchAlbums } from '../../core/hooks/useSearchAlbums'
 
-interface Props { }
+interface Props {
+    tab: string
+}
 
 const albumsMock: AlbumView[] = [
     { id: "123", name: "Album 123", type: "album", images: [{ height: 300, width: 300, url: "https://www.placecage.com/c/300/300" }] },
@@ -29,11 +31,12 @@ const albumsMock: AlbumView[] = [
     - https://developer.spotify.com/documentation/web-api/reference/#endpoint-search
 */
 
-export const MusicSearchView = (props: Props) => {
+export const MusicSearchView = ({ tab }: Props) => {
     // const { searchAlbums, isLoading, message, results } = useSearchAlbums('http://localhost:3000/data/albums.json')
 
     const {
         searchAlbums,
+        searchArtist,
         isLoading,
         message,
         results
@@ -43,7 +46,9 @@ export const MusicSearchView = (props: Props) => {
         <div>
             <div className="row">
                 <div className="col">
-                    <SearchForm onSearch={searchAlbums} />
+                    <SearchForm
+                        onSearch={tab === 'albums' ? searchAlbums : searchArtist}
+                    />
                 </div>
             </div>
             <div className="row">
