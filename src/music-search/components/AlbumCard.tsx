@@ -1,5 +1,5 @@
 import React from 'react'
-import { AlbumView, Artist } from '../../model/Search'
+import { Artist } from '../../model/Search'
 import styles from '../containers/MusicSearchView.module.css'
 
 interface Props {

@@ -1,19 +1,11 @@
-import React, { useState } from 'react'
-import { AlbumView } from '../../model/Search'
+import React from 'react'
 import { AlbumGrid } from '../components/AlbumGrid'
 import { SearchForm } from '../components/SearchForm'
-import { useSearchAlbums } from '../../core/hooks/useSearchAlbums'
+import { SearchInSpotify } from '../../core/hooks/useSearchAlbums'
 
 interface Props {
     tab: string
 }
-
-const albumsMock: AlbumView[] = [
-    { id: "123", name: "Album 123", type: "album", images: [{ height: 300, width: 300, url: "https://www.placecage.com/c/300/300" }] },
-    { id: "234", name: "Album 234", type: "album", images: [{ height: 300, width: 300, url: "https://www.placecage.com/c/400/400" }] },
-    { id: "345", name: "Album 345", type: "album", images: [{ height: 300, width: 300, url: "https://www.placecage.com/c/500/500" }] },
-    { id: "456", name: "Album 456", type: "album", images: [{ height: 300, width: 300, url: "https://www.placecage.com/c/600/600" }] },
-]
 
 /* TODO:
     - W AppComponent - przelaczane widoki jako zakladki do wyboru - "Szukaj Albumow" i "Szukaj Artystow" 
@@ -35,19 +27,18 @@ export const MusicSearchView = ({ tab }: Props) => {
     // const { searchAlbums, isLoading, message, results } = useSearchAlbums('http://localhost:3000/data/albums.json')
 
     const {
-        searchAlbums,
-        searchArtist,
+        search,
         isLoading,
         message,
         results
-    } = useSearchAlbums('https://api.spotify.com/v1/search')
+    } = SearchInSpotify('https://api.spotify.com/v1/search', tab)
 
     return (
         <div>
             <div className="row">
                 <div className="col">
                     <SearchForm
-                        onSearch={tab === 'albums' ? searchAlbums : searchArtist}
+                        onSearch={search}
                     />
                 </div>
             </div>

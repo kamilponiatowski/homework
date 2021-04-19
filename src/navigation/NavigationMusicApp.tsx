@@ -11,8 +11,8 @@ export function NavigationMusicApp({ onChangeTab, currentTab }: Props): ReactEle
         <ul className="nav nav-tabs mb-3">
             <li className="nav-item">
                 <button
-                    className={`nav-link ${styles.cursorPointer} ${currentTab === 'albums' ? 'active' : 'bg-transparent'}`}
-                    onClick={e => onChangeTab('albums')}
+                    className={`nav-link ${styles.cursorPointer} ${currentTab === 'album' ? 'active' : 'bg-transparent'}`}
+                    onClick={e => onChangeTab('album')}
                 >
                     Szukaj Albumów
                 </button>
