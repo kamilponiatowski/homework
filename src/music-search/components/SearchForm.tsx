@@ -9,6 +9,7 @@ export const SearchForm = ({ onSearch }: Props) => {
     const queryRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
+        if (!query) return;
         const handle = setTimeout(() => { onSearch(query) }, 500);
 
         return () => clearTimeout(handle)
@@ -24,7 +25,7 @@ export const SearchForm = ({ onSearch }: Props) => {
 
                 <input type="text" className="form-control" placeholder="Search" id="query_id" ref={queryRef}
                     onChange={e => setQuery(e.target.value)}
-                    onKeyUp={e => e.code === 'Enter' && onSearch(query)}
+                    onKeyUp={e => e.code === 'Enter' && query && onSearch(query)}
                 />
 
                 {/* <button className="btn btn-outline-secondary" type="button" onClick={() => onSearch(query)}>Search</button> */}
