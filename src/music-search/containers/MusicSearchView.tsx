@@ -4,9 +4,11 @@ import { AlbumGrid } from '../components/AlbumGrid'
 import { SearchForm } from '../../core/components/SearchForm'
 import { fetchAlbums, fetchArtists, useFetch, useSearchAlbums } from '../../core/hooks/useSearchAlbums'
 
-interface Props { }
+interface Props {
+    tab: string
+}
 
-export const MusicSearchView = (props: Props) => {
+export const MusicSearchView = ({ tab }: Props) => {
     const [{ isLoading, message, results }, setQuery] = useFetch(fetchAlbums)
 
     return (

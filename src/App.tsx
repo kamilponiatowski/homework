@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PlaylistsView } from './playlists/containers/PlaylistsView';
 
 // npm i bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 import { MusicSearchView } from './music-search/containers/MusicSearchView';
+import { NavigationMusicApp } from './navigation/NavigationMusicApp';
 
 function App() {
+  const [tab, setTab] = useState<string>('album') // album, artist, playlist, track, show, episode _______ own-playlist
+
   return (
     <div>
       {/* .container>.row>.col */}
@@ -14,9 +17,15 @@ function App() {
           <div className="col">
 
             <h1>MusicApp</h1>
+            <NavigationMusicApp currentTab={tab} onChangeTab={(newTab: string) => setTab(newTab)} />
 
-            <PlaylistsView />
-            {/* <MusicSearchView/> */}
+            {
+              tab === 'own-playlist'
+                ? <PlaylistsView />
+                : <MusicSearchView
+                  tab={tab}
+                />
+            }
           </div>
         </div>
       </div>
