@@ -5,11 +5,12 @@ import { SearchForm } from '../../core/components/SearchForm'
 import { fetchAlbums, fetchArtists, useFetch, useSearchAlbums } from '../../core/hooks/useSearchAlbums'
 
 interface Props {
-    tab: string
+    tab: string,
+    fetchMethod: () => any
 }
 
-export const MusicSearchView = ({ tab }: Props) => {
-    const [{ isLoading, message, results }, setQuery] = useFetch(fetchAlbums)
+export const MusicSearchView = ({ tab, fetchMethod }: Props) => {
+    const [{ isLoading, message, results }, setQuery] = useFetch(fetchMethod)
 
     return (
         <div>
