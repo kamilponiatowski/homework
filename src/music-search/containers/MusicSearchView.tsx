@@ -1,32 +1,45 @@
-import React from 'react'
-import { Album, AlbumView } from '../../model/Search'
-import { AlbumGrid } from '../components/AlbumGrid'
-import { SearchForm } from '../../core/components/SearchForm'
-import { fetchAlbums, fetchArtists, useFetch, useSearchAlbums } from '../../core/hooks/useSearchAlbums'
+import React, { useCallback } from 'react'
+import { fetchAlbums, fetchArtists } from '../../core/hooks/useSearchAlbums'
+import { SearchView } from '../../core/components/SearchView'
+import { ArtistCard } from '../components/ArtistCard'
+import { AlbumCard } from '../components/AlbumCard'
 
 interface Props {
     tab: string,
-    fetchMethod: () => any
 }
 
-export const MusicSearchView = ({ tab, fetchMethod }: Props) => {
-    const [{ isLoading, message, results }, setQuery] = useFetch(fetchMethod)
+export const MusicSearchView = ({ tab }: Props) => {
+    const { fetchMethod, card } = useCallback(
+        () => {
+            if (!tab) return
+            switch (tab) {
+                case 'album': {
+                    return {
+                        fetchMethod: fetchAlbums,
+                        card: AlbumCard,
+                    };
+                }
+                case 'artist': {
+                    return {
+                        fetchMethod: fetchArtists,
+                        card: ArtistCard,
+                    };
+                }
+                default: {
+                    return {
+                        fetchMethod: fetchAlbums,
+                        card: AlbumCard,
+                    };
+                }
+            }
+        },
+        [tab],
+    )
 
     return (
-        <div>
-            <div className="row">
-                <div className="col">
-                    <SearchForm onSearch={setQuery} />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col">
-                    {isLoading && <p className="alert alert-info">Loading</p>}
-                    {message && <p className="alert alert-danger">{message}</p>}
-
-                    {results && <AlbumGrid albums={results} />}
-                </div>
-            </div>
-        </div>
+        <SearchView
+            fetchMethod={fetchMethod}
+            card={card}
+        />
     )
 }

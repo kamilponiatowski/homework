@@ -49,7 +49,38 @@ export const fetchAlbums = (query: string) => {
 
     return (response.then(response => response.data.albums.items))
 }
-    
+
+export const FetchFromSpotify = (query: string) => {
+    const response = axios.get<ArtistsSearchResponse>('https://api.spotify.com/v1/search', {
+        params: { q: query, type: 'artist' },
+    });
+
+    type Tab = 'artist' | 'album';
+    const t: Tab = 'as' as any;
+
+    if (t.type === 'album') {
+        t.artists
+    } else {
+        t.album
+    }
+
+    return (response
+        // .then(response => response.data.albums.items)
+        .then(({ data }): Tab = 'as' as any => {
+    if (data.type === 'album') {
+        data.artists
+    } else {
+        data.album
+    }
+})
+        .catch ((err: Error | AxiosError<{ error: { message: string } }>) => {
+
+})
+    )
+}
+
+
+
 export const useFetch = function <T, P>(fetcher: (params: P) => Promise<T>) {
     const [results, setResults] = useState<T | null>(null);
     const [isLoading, setIsLoading] = useState(false);
