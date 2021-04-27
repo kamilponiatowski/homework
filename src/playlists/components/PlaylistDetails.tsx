@@ -14,11 +14,11 @@ export const PlaylistDetails: React.FC<Props> = ({
 }) => {
 
     return (
-        <div>
+        <section aria-label="details for the selected playlist" data-testid="playlist-details">
             <dl data-playlist-id={playlist.id}>
                 <dt>Name:</dt>
 
-                <dd aria-label="Playlist Name" 
+                <dd aria-label="Playlist Name"
                     data-testid="playlist_name">{playlist.name}</dd>
 
                 <dt>Public:</dt>
@@ -31,6 +31,6 @@ export const PlaylistDetails: React.FC<Props> = ({
             </dl>
 
             <button className="btn btn-danger" onClick={edit}>Edit</button>
-        </div>
+        </section>
     )
 }/* , (prevProps, nextProps) => prevProps.playlist === nextProps.playlist */
