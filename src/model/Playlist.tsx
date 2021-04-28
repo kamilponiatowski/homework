@@ -4,3 +4,7 @@ export interface Playlist {
     public: boolean;
     description: string;
 }
+
+export interface ResponsePlaylist {
+    items: Playlist[]
+}

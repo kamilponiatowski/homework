@@ -4,6 +4,7 @@ import { PlaylistsView } from './playlists/containers/PlaylistsView';
 // npm i bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 import { MusicSearchView } from './music-search/containers/MusicSearchView';
+import { PlaylistsTDD } from './playlists/containers/PlaylistsTDD';
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
           <div className="col">
 
             <h1>MusicApp</h1>
-
-            <PlaylistsView />
+            <PlaylistsTDD />
+            {/* <PlaylistsView /> */}
             {/* <MusicSearchView/> */}
           </div>
         </div>

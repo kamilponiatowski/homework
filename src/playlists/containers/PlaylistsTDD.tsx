@@ -9,17 +9,18 @@ interface Props {
 
 export const PlaylistsTDD = (props: Props) => {
     const [playlists, setPlaylists] = useState<Playlist[]>([])
-
+    console.log('render', playlists)
     useEffect(() => {
-        fetchPlaylists().then(res => {
-            setPlaylists(res)
+        fetchPlaylists().then(items => {
+            setPlaylists(items)
         })
     }, [])
 
     return (
         <div>
 
-            <PlaylistList playlists={playlists}
+            <PlaylistList
+                playlists={playlists}
                 onRemove={() => { }}
                 onSelected={() => { }}
             />

@@ -2,12 +2,11 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import { promises } from "node:dns";
 import { useFetch } from "../../core/hooks/useFetch";
 import { fetchPlaylists } from "../../core/hooks/usePlaylists";
-import { Playlist } from "../../model/Playlist";
+import { Playlist, ResponsePlaylist } from "../../model/Playlist";
 import { PlaylistsTDD } from "./PlaylistsTDD";
 
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-
 
 // jest.mock("../../core/hooks/usePlaylists")
 
@@ -17,12 +16,22 @@ describe('PlaylistsTDD', () => {
     // https://mswjs.io/docs/getting-started/mocks/rest-api
     const server = setupServer(
         rest.get('https://api.spotify.com/v1/me/playlists', (req, res, ctx) => {
-            const mockPlaylists: Playlist[] = [
-                { id: '123', name: 'TestTitle 1', description: '', public: false },
-                { id: '234', name: 'TestTitle 2', description: '', public: false },
-            ];
+            const mockPlaylists: ResponsePlaylist = {
+                items: [
+                    { id: '123', name: 'TestTitle 1', description: '', public: false },
+                    { id: '234', name: 'TestTitle 2', description: '', public: false },
+                ]
+            };
             ctx.delay(500)
             return res(ctx.json(mockPlaylists))
+        }),
+        rest.get('https://api.spotify.com/v1/me/:playlist_id', (req, res, ctx) => {
+            ctx.delay()
+            return res(ctx.json(req.params.playlist_id))
+        }),
+        rest.put('https://api.spotify.com/v1/me/:playlist_id', (req, res, ctx) => {
+            ctx.delay()
+            return res(ctx.json(req.params.playlist_id))
         }),
         // https://mswjs.io/docs/basics/request-matching
         // GET https://api.spotify.com/v1/playlists/:playlist_id
@@ -53,7 +62,7 @@ describe('PlaylistsTDD', () => {
         setup()
         const noItems = screen.queryAllByRole('listitem', {})
         expect(noItems).toHaveLength(0)
-        
+
         // Assert - Then ... // Shows list of playlists
         const items = await screen.findAllByRole('listitem', {})
 
