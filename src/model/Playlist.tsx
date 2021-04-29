@@ -5,6 +5,6 @@ export interface Playlist {
     description: string;
 }
 
-export interface ResponsePlaylist {
+export interface ResponsePlaylists {
     items: Playlist[]
 }

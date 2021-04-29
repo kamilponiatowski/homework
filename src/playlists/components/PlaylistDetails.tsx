@@ -18,7 +18,7 @@ export const PlaylistDetails: React.FC<Props> = ({
             <dl data-playlist-id={playlist.id}>
                 <dt>Name:</dt>
 
-                <dd aria-label="Playlist Name" 
+                <dd aria-label="Playlist Name"
                     data-testid="playlist_name">{playlist.name}</dd>
 
                 <dt>Public:</dt>
