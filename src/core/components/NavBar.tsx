@@ -28,6 +28,9 @@ export const NavBar = (props: Props) => {
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/search">Search</NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/tracks">Track</NavLink>
+                            </li>
                             {/* <LinkDecorator to="/playlists" className="nav-link" /> */}
                         </ul>
                     </div>
@@ -53,4 +56,4 @@ export const LinkDecorator: React.FC<
         }} >{children}</a>
     }
 
-const IsADecorator: React.FC<{ tag: string }> = ({ tag, children, ...rest }) => React.createElement(tag, {...rest}, children)
+const IsADecorator: React.FC<{ tag: string }> = ({ tag, children, ...rest }) => React.createElement(tag, { ...rest }, children)
