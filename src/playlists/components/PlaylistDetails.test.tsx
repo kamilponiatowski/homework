@@ -1,5 +1,5 @@
 import { PlaylistDetails } from "./PlaylistDetails"
-import { render, screen, cleanup, getRoles, logRoles } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Playlist } from "../../model/Playlist";
 
 export { }
@@ -17,7 +17,7 @@ describe('PlaylistDetails', () => {
     }
 
     test('emits edit event when button clicked', () => {
-        const { editSpy, container } = setup({})
+        const { editSpy } = setup({})
         screen.debug()
         // https://testing-library.com/docs/dom-testing-library/api-accessibility
         // console.log(getRoles(screen.getByRole('button')))

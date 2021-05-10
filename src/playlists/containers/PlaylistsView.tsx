@@ -5,7 +5,7 @@ import { SearchForm } from '../../core/components/SearchForm'
 import { PlaylistDetails } from '../components/PlaylistDetails'
 import { PlaylistEditForm } from '../components/PlaylistEditForm'
 import { PlaylistList } from '../components/PlaylistList'
-import { Route, Switch, useHistory, useLocation, useParams } from 'react-router'
+import { Route, Switch, useHistory, useParams } from 'react-router'
 
 interface Props { }
 
@@ -34,31 +34,32 @@ const data: Playlist[] = [
 export const PlaylistsView = (props: Props) => {
     const [selectedId, setSelectedId] = useState<string | undefined>()
     const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | undefined>()
-    const [mode, setMode] = useState<'details' | 'form' | 'create'>('details')
     const [playlists, setPlaylists] = useState<Playlist[]>(data)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [filter, setFilter] = useState('')
 
     const { replace, push } = useHistory()
-    const { search: searchParams } = useLocation()
     // /user/:user_id/posts/:post_id/comments/345/edit
     const { playlist_id } = useParams<{ playlist_id: string }>()
 
     useEffect(() => {
-        // const id = new URLSearchParams(searchParams).get('id')
         setSelectedId(playlist_id || undefined)
     }, [playlist_id])
 
     const changeSelectedPlaylist = useCallback((id: Playlist['id']): void => {
         push('/playlists/' + id + '/')
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
     useEffect(() => {
-        setSelectedPlaylist(playlists.find(p => p.id == selectedId))
+        setSelectedPlaylist(playlists.find(p => p.id === selectedId))
     }, [selectedId, playlists])
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const edit = useCallback(() => { replace(`/playlists/${playlist_id}/edit`) }, [playlist_id])
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const cancel = useCallback(() => { replace(`/playlists/${playlist_id}/`) }, [playlist_id])
 
     const saveChangedPlaylist = useCallback((draft: Playlist) => {
@@ -68,6 +69,7 @@ export const PlaylistsView = (props: Props) => {
         replace('/playlists/' + draft.id + '/')
         setPlaylists(playlists => playlists.map(p => p.id === draft.id ? draft : p))
         return null;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const saveNewPlaylist = useCallback((draft: Playlist) => {
@@ -81,6 +83,7 @@ export const PlaylistsView = (props: Props) => {
 
         replace('/playlists/' + draft.id + '/')
         return null;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const removePlaylist = useCallback((id: Playlist['id']) => {

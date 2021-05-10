@@ -1,55 +1,77 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { MyInput } from '../../core/components/MyInput'
+import { theme } from '../../core/styles/data'
 
 interface Props {
 
 }
 
-
-export interface DefaultTheme {
-    primary: {
-        color: string;
-        background: string
-        border?: string
-    }
-    company: {
-        color: string
-        background: string
-        border: string
-    }
-}
-
-const theme: DefaultTheme = {
-    primary: {
-        color: 'grey',
-        background: '#eee',
-        border: '#BADA55',
-    },
-    company: {
-        color: 'rebeccapurple',
-        background: '#ecc05f',
-        border: 'rebeccapurple',
-    }
-}
-
 export const LogIn = (props: Props) => {
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+
+    function validateForm() {
+        console.log('validate')
+    }
+
+    function submit(e: React.MouseEvent) {
+        e.preventDefault();
+        validateForm();
+        console.log('after validate')
+        setEmail('')
+        setPassword('')
+    }
 
     return (
-        <form className="col-6 mx-auto mt-4">
+        <form className="col-sm-10 col-md-8 col-lg-6 mx-auto mt-4" noValidate>
             <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Email address</label>
-                <MyInput theme={theme} primary={true} type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                <MyInput
+                    type="email"
+                    id="exampleInputEmail1"
+                    className="form-control"
+                    placeholder="Enter email"
+                    aria-describedby="emailHelp"
+                    value={email}
+                    theme={theme}
+                    primary={true}
+                    onBlur={(e) => validateForm()}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
                 <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div className="form-group">
                 <label htmlFor="exampleInputPassword1">Password</label>
-                <MyInput theme={theme} primary={true} required type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                <MyInput
+                    required
+                    type="password"
+                    placeholder="Password"
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    theme={theme}
+                    primary={true}
+                    value={password}
+                    onBlur={(e) => validateForm()}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
             </div>
             <div className="form-check d-flex align-items-center mb-2">
-                <input type="checkbox" required className="form-check-input" id="exampleCheck1" />
+                <input
+                    required
+                    type="checkbox"
+                    id="exampleCheck1"
+                    className="form-check-input"
+                    onClick={(e) => validateForm()}
+                />
                 <label className="form-check-label" htmlFor="exampleCheck1">you must accept cakes to log in</label>
             </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={(e) => submit(e)}
+            >
+                Submit
+            </button>
         </form>
     )
 }

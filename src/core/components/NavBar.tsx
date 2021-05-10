@@ -1,5 +1,5 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 
 interface Props {
 
@@ -12,7 +12,7 @@ export const NavBar = (props: Props) => {
             <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-3">
                 <div className="container">
 
-                    <a className="navbar-brand" href="#">MusicApp</a>
+                    <a className="navbar-brand" href="/">MusicApp</a>
 
                     <button className="navbar-toggler" type="button" onClick={() => setCollapsed(prev => !prev)}
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,22 +58,3 @@ export const LinkDecorator: React.FC<
             window.history.pushState('', '', to)
         }} >{children}</a>
     }
-
-const IsADecorator: React.FC<{ tag: string }> = ({ tag, children, ...rest }) => React.createElement(tag, { ...rest }, children)
-
-
-const FancyInput = forwardRef(function ({ ...restProps }: any, ref: React.Ref<any>) {
-    const inputRef = useRef<any>();
-
-    useImperativeHandle(ref, () => ({
-        focus: () => {
-            inputRef.current.focus();
-        }
-    }), []);
-
-    return <div>
-        <input ref={inputRef} {...restProps} />
-    </div>;
-});
-
-{/* <FancyInput ref={mojRef} /> */ }

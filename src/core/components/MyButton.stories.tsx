@@ -1,8 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import { NavBar } from './NavBar'
 import { MyButton } from './MyButton';
-import { MemoryRouter, Link, NavLink } from 'react-router-dom';
+import { MemoryRouter, NavLink } from 'react-router-dom';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 
 declare module 'styled-components' {

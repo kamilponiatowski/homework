@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 import { NavBar } from './NavBar'
-import { MemoryRouter, Router } from 'react-router'
+import { MemoryRouter } from 'react-router'
 
 
 export default {
