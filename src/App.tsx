@@ -9,7 +9,7 @@ import { MusicSearchView } from './music-search/containers/MusicSearchView';
 import { Redirect, Route, Switch } from 'react-router'
 import { NavBar } from './core/components/NavBar';
 import PlaylistTracks from './playlists/containers/PlaylistTracks';
-import { LogIn } from './playlists/containers/PlaylistLogIn';
+import { LogIn } from './playlists/containers/LogIn';
 
 function App() {
   return (

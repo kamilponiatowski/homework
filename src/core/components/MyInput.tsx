@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components'
 
 interface Props {
-  primary: boolean
-  required: boolean
+  primary?: boolean
+  required?: boolean
 }
 
 export const MyInput = styled.input<Props>`
