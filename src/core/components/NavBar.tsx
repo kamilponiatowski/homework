@@ -31,6 +31,9 @@ export const NavBar = (props: Props) => {
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/tracks">Tracks</NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/log-in">Log in</NavLink>
+                            </li>
                             {/* <LinkDecorator to="/playlists" className="nav-link" /> */}
                         </ul>
                     </div>
@@ -66,8 +69,8 @@ const FancyInput = forwardRef(function ({ ...restProps }: any, ref: React.Ref<an
         focus: () => {
             inputRef.current.focus();
         }
-    }),[]);
-    
+    }), []);
+
     return <div>
         <input ref={inputRef} {...restProps} />
     </div>;

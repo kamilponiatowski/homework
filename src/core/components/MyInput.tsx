@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const MyInput = styled.input<Props>`
-  background-color: ${props => props.theme[!props.primary ? 'primary' : 'company']!.background};
+  background-color: ${props => props.theme[props.primary ? 'primary' : 'company']!.background};
   height: 40px;
   border-radius: 5px;
   border: 1px solid #ddd;
