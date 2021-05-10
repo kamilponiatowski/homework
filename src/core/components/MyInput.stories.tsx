@@ -1,17 +1,16 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import { NavBar } from './NavBar'
-import { MyButton } from './MyButton';
-import { MemoryRouter, Link, NavLink } from 'react-router-dom';
+import { MyInput } from './MyInput';
+import { MemoryRouter } from 'react-router-dom';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
     primary: {
       color: string;
-      background: string,
-      border?: string,
-    },
+      background: string
+      border?: string
+    }
     company: {
       color: string
       background: string
@@ -34,14 +33,11 @@ const theme: DefaultTheme = {
 }
 
 export default {
-  title: 'Core/MyButton',
-  component: MyButton,
-  argTypes: {
-    // backgroundColor: { control: 'color' },
-  },
+  title: 'Core/MyInput',
+  component: MyInput,
   decorators: [
     (Story) => {
-      return <MemoryRouter> {/* <Story /> */}
+      return <MemoryRouter>
         {Story()}
       </MemoryRouter>
     },
@@ -53,50 +49,39 @@ export default {
   ]
 } as Meta;
 
-const Template: Story<Parameters<typeof MyButton>[0]> = (args) => <MyButton {...args} />;
+const Template: Story<Parameters<typeof MyInput>[0]> = (args) => <MyInput {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Default = Template.bind({});
+Default.args = {
   href: "https://github.com/styled-components/styled-components",
   target: "_blank",
   rel: "noopener",
   primary: true,
-  children: 'Primary',
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
+export const CustomForCompanyInput = Template.bind({});
+Default.args = {
   href: "https://github.com/styled-components/styled-components",
   target: "_blank",
   rel: "noopener",
-  // primary: true,
-  children: 'Secondary',
+  primary: false,
 };
-export const AsButton = Template.bind({});
-AsButton.args = {
+
+export const Password = Template.bind({});
+Password.args = {
   href: "https://github.com/styled-components/styled-components",
+  type: 'password',
   target: "_blank",
-  rel: "noopener",
-  // primary: true,
-  children: 'Secondary',
+  primary: true,
+  required: false,
 };
 
-export const AsLink = Template.bind({});
-AsLink.args = {
-  to: "styled-components",
-  // primary: true,
-  as: NavLink,
-  children: 'Nav Link',
+export const PasswordRequired = Template.bind({});
+PasswordRequired.args = {
+  href: "https://github.com/styled-components/styled-components",
+  type: 'password',
+  target: "_blank",
+  primary: true,
+  required: true,
 };
 
-export const Nested = Template.bind({});
-Nested.args = {
-  to: "styled-components",
-  // primary: true,
-  as: 'a',
-  children: <div>
-    <div className="placki">
-      Nested Link
-    </div>
-  </div>,
-};
