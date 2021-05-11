@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegisterView Should render form 1`] = `
+<div>
+  <div
+    className="form-group"
+  >
+    <label
+      htmlFor="username"
+    >
+      Username:
+    </label>
+    <input
+      className="form-control"
+      id="username"
+      type="text"
+    />
+  </div>
+  <div
+    className="form-group"
+  >
+    <label
+      htmlFor="password"
+    >
+      Password:
+    </label>
+    <input
+      className="form-control"
+      id="password"
+      type="text"
+    />
+  </div>
+  <div
+    className="form-group"
+  >
+    <button
+      className="btn btn-danger"
+    >
+      Cancel
+    </button>
+    <button
+      className="btn btn-sucess"
+    >
+      Register
+    </button>
+  </div>
+</div>
+`;
