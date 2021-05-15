@@ -1,17 +1,27 @@
-import { AlbumView } from "../../model/Search";
+import { Album, AlbumView } from "../../model/Search";
 import { AppState } from "../../store";
 
 interface SearchState {
+    albumId?: Album['id']
+    album?: Album
     query: string,
     isLoading: boolean,
     message: string,
     results: AlbumView['id'][]
     entities: { [k: string]: AlbumView }
 }
+
 type Actions =
     | SEARCH_START
     | SEARCH_SUCCESS
-    | SEARCH_FAILED;
+    | SEARCH_FAILED
+    | FETCH_ALBUM_START
+    | FETCH_ALBUM_SUCCESS
+    | FETCH_ALBUM_FAILED
+
+type FETCH_ALBUM_START = { type: 'FETCH_ALBUM_START', payload: { id: Album['id'] } }
+type FETCH_ALBUM_SUCCESS = { type: 'FETCH_ALBUM_SUCCESS', payload: { result: Album } }
+type FETCH_ALBUM_FAILED = { type: 'FETCH_ALBUM_FAILED', payload: { error: Error } }
 
 type SEARCH_START = { type: 'SEARCH_START', payload: { query: string } }
 type SEARCH_SUCCESS = { type: 'SEARCH_SUCCESS', payload: { results: AlbumView[] } }
@@ -22,6 +32,7 @@ export const initialState: SearchState = {
     isLoading: false,
     message: '',
     results: [],
+    album: undefined,
     entities: {
         /// "123":{...album...}
     }
@@ -48,6 +59,16 @@ const reducer = (
         case 'SEARCH_FAILED': return {
             ...state, isLoading: false, message: action.payload.error?.message || 'Unexpected Error'
         }
+        /* ====== One Album ===== */
+        case 'FETCH_ALBUM_START': return {
+            ...state, albumId: action.payload.id, isLoading: true, message: '', album: undefined
+        }
+        case 'FETCH_ALBUM_SUCCESS': return {
+            ...state, album: action.payload.result, isLoading: false
+        }
+        case 'FETCH_ALBUM_FAILED': return {
+            ...state, message: action.payload.error?.message, isLoading: false
+        }
         default:
             return state
     }
@@ -65,6 +86,17 @@ export const searchStart = (query: string): SEARCH_START => ({ type: 'SEARCH_STA
 export const searchSuccess = (results: AlbumView[]): SEARCH_SUCCESS => ({ type: 'SEARCH_SUCCESS', payload: { results } })
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })
 
+
+export const fetchAlbumStart = (id: string): FETCH_ALBUM_START => ({
+    type: 'FETCH_ALBUM_START', payload: { id }
+})
+export const fetchAlbumSuccess = (result: Album): FETCH_ALBUM_SUCCESS => ({
+    type: 'FETCH_ALBUM_SUCCESS', payload: { result }
+})
+export const fetchAlbumFailed = (error: Error): FETCH_ALBUM_FAILED => ({
+    type: 'FETCH_ALBUM_FAILED', payload: { error }
+})
+
 /* Store Selector */
 export const selectSearchState = (state: AppState) => state.search
 
@@ -74,3 +106,6 @@ export const selectSearchResults = (state: AppState): AlbumView[] => {
     const search = selectSearchState(state)
     return search.results.map(id => search.entities[id])
 }
+
+
+export const selectAlbumFetchState = (state: AppState) => state.search

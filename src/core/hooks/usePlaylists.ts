@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Playlist } from "../../model/Playlist"
-import { PagingObject } from "../../model/Search"
+import { Album, PagingObject } from "../../model/Search"
 import { useFetch } from "./useFetch"
 
 
@@ -18,5 +18,10 @@ export const fetchPlaylists = (): Promise<Playlist[]> => {
 
 export const fetchPlaylist = (id: Playlist['id']): Promise<Playlist> => {
     return axios.get<Playlist>('https://api.spotify.com/v1/playlists/' + id).then(resp => resp.data)
+}
 
+
+export const fetchAlbumById = (id: Album['id']): Promise<Album> => {
+    return axios.get<Album>('https://api.spotify.com/v1/albums/' + id)
+        .then(resp => resp.data)
 }
