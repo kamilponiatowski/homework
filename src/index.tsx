@@ -11,6 +11,11 @@ import { UserContextProvider } from './core/contexts/UserContext';
 import { store } from './store';
 
 (window as any).store = store;
+
+store.subscribe(()=> console.log(store.getState()) )
+
+store.dispatch({type:'INC', payload:42}) 
+
 auth.init();
 
 
