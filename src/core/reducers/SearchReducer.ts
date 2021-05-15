@@ -14,10 +14,13 @@ export const searchStart = (query: string): SEARCH_START => ({ type: 'SEARCH_STA
 export const searchSuccess = (results: AlbumView[]): SEARCH_SUCCESS => ({ type: 'SEARCH_SUCCESS', payload: { results } })
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })
 
-export const initialState = { query: '', isLoading: false, message: '', results: [] as AlbumView[] }
+export const initialState:SearchState = { query: '', isLoading: false, message: '', results: [] as AlbumView[] }
 
 
-const reducer = (state: SearchState, action: Actions): SearchState => {
+const reducer = (
+    state = initialState,
+    action: Actions
+): SearchState => {
 
     switch (action.type) {
         case 'SEARCH_START': return {
