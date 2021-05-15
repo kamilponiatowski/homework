@@ -9,6 +9,7 @@ import { MusicSearchView } from './music-search/containers/MusicSearchView';
 import { Redirect, Route, Switch } from 'react-router'
 import { NavBar, UserWidget } from './core/components/NavBar';
 import PlaylistTracks from './playlists/containers/PlaylistTracks';
+import { PlaylistsReduxView } from './playlists/containers/PlaylistsReduxView';
 
 function App() {
   return (
@@ -21,8 +22,8 @@ function App() {
 
             <Switch>
               <Redirect path="/" exact={true} to="/playlists" />
-              <Route path="/playlists/:playlist_id/" component={PlaylistsView} />
-              <Route path="/playlists/" component={PlaylistsView} />
+              <Route path="/playlists/:playlist_id/" component={PlaylistsReduxView} />
+              <Route path="/playlists/" component={PlaylistsReduxView} />
               <Route path="/tracks/" component={PlaylistTracks} />
               <Route path="/search" component={MusicSearchView} />
               <Route path="*" render={() => <h1>Page Not Found</h1>} />
