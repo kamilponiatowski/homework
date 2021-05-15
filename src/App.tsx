@@ -7,7 +7,7 @@ import { MusicSearchView } from './music-search/containers/MusicSearchView';
 
 // npm i --save-dev @types/react-router
 import { Redirect, Route, Switch } from 'react-router'
-import { NavBar } from './core/components/NavBar';
+import { NavBar, UserWidget } from './core/components/NavBar';
 import PlaylistTracks from './playlists/containers/PlaylistTracks';
 
 function App() {

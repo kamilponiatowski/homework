@@ -8,8 +8,11 @@ import { auth } from './core/services';
 // import { HashRouter as Router } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserContextProvider } from './core/contexts/UserContext';
+import { store } from './store';
 
-auth.init()
+(window as any).store = store;
+auth.init();
+
 
 ReactDOM.render(
   <React.StrictMode>
