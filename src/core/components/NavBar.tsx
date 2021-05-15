@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { UserContext } from '../contexts/UserContext'
 
@@ -35,15 +35,7 @@ export const NavBar = (props: Props) => {
                             {/* <LinkDecorator to="/playlists" className="nav-link" /> */}
                         </ul>
                         <div className="navbar-text ml-auto">
-                            <UserContext.Consumer>{({ user, login, logout }) => <>
-                                {user ?
-                                    <span>Welcome {user.display_name} |
-                                    <span className="text-white" onClick={logout}> Logout</span></span>
-                                    :
-                                    <span>Welcome Guest |
-                                    <span className="text-white" onClick={login}> Login</span></span>
-                                }
-                            </>}</UserContext.Consumer>
+                            <UserWidget />
                         </div>
                     </div>
                 </div>
@@ -51,6 +43,30 @@ export const NavBar = (props: Props) => {
         </div>
     )
 }
+
+export const UserWidget = () => {
+    const { login, logout, user } = useContext(UserContext)
+
+    return user ?
+        <span>Welcome {user.display_name} |
+    <span className="text-white" onClick={logout}> Logout</span></span>
+        :
+        <span>Welcome Guest |
+    <span className="text-white" onClick={login}> Login</span></span>
+}
+
+{/* <UserContext.Consumer>{({ user, login, logout }) => <>
+{user ?
+    <span>Welcome {user.display_name} |
+    <span className="text-white" onClick={logout}> Logout</span></span>
+    :
+    <span>Welcome Guest |
+    <span className="text-white" onClick={login}> Login</span></span>
+}
+</>}</UserContext.Consumer> */}
+
+
+
 
 export const LinkDecorator: React.FC<
     { to: string } & React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>
