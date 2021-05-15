@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
 import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
+import SelectPlaylist from '../../playlists/components/SelectPlaylist'
 import { AlbumCard } from '../components/AlbumCard'
 
 interface Props {
@@ -67,6 +68,25 @@ export const AlbumDetails = (props: Props) => {
                         <dt>Artist:</dt>
                         <dd>{album?.artists[0]?.name}</dd>
                     </dl>
+
+                    {/* 
+                        TODO:
+                            - search results - clicking PhilCollins redirects here with ID
+                            - show list of playlists below
+                            - dispatch select playlist 
+                            - show tracks
+                            - on button click add track to selected playlist
+                    */}
+
+                    <SelectPlaylist playlists={[]} onSelect={() => { }} />
+
+                    <h3>Tracks</h3>
+                    {album?.tracks.items.map(track =>
+                        <p>
+                            .... (+) add to selected playlist
+                        </p>
+                    )}
+
 
                 </div>
             </div>
