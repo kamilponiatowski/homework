@@ -1,6 +1,7 @@
 import { combineReducers, createStore, Reducer } from "redux";
 import counter from "./core/reducers/CouterReducer";
 import playlists, { } from "./core/reducers/PlaylistsReducer";
+import tracks from "./core/reducers/TracksReducer";
 
 // const initialState = {
 //     counter: 0,
@@ -20,7 +21,8 @@ import playlists, { } from "./core/reducers/PlaylistsReducer";
 const reducer = combineReducers({
     // counter: counter,  // Slice Reducer
     counter,
-    playlists
+    playlists,
+    tracks: tracks
 })
 
 export type AppState = ReturnType<typeof reducer>

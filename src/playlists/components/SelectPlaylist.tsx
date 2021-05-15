@@ -20,6 +20,7 @@ export default class SelectPlaylist extends Component<Props, State> {
                     const playlist_id = e.currentTarget.selectedOptions[0].value
                     this.props.onSelect(playlist_id);
                 }}>
+                    <option>-- Please select playlist --</option>
                     {this.props.playlists.map(playlist => <option key={playlist.id} value={playlist.id}>
                         {playlist.name}
                     </option>)}

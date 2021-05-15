@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { SearchForm } from '../../core/components/SearchForm'
-import { Track } from '../../model/Search'
+import { selectPlaylist, selectPlaylists, selectSelectedPlaylistTracks, selectSelectedTrack, tracksPlaylistsSelect, tracksSelect, tracksUpdate } from '../../core/reducers/TracksReducer'
+import { SimpleTrack, Track } from '../../model/Search'
 import SelectPlaylist from '../components/SelectPlaylist'
 import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
@@ -11,20 +13,16 @@ interface Props {
 }
 
 export const PlaylistTracksHooks = (props: Props) => {
-    // TODO:
-    // - store state
-    // - store actions
-    // - select from store
-    //      - playlists,  
-    //      - selected playlist, 
-    //      - selected plalyist tracks
-    //      - selected track
-    // - dispatch to store
-    //      - load playlists,
-    //      - select playlist, 
-    //      - select track, 
-    //      - update track
-    // ???
+    const dispatch = useDispatch()
+
+    const playlists = useSelector(selectPlaylists)
+    const selectedPlaylist = useSelector(selectPlaylist)
+    const selectedPlaylistTracks = useSelector(selectSelectedPlaylistTracks)
+    const selectedTrack = useSelector(selectSelectedTrack)
+
+    const selectPlaylistById = useCallback((id: string) => { dispatch(tracksPlaylistsSelect(id)) }, [])
+    const selectTrackById = useCallback((track: SimpleTrack) => { dispatch(tracksSelect(track.id)) }, [])
+    const updateTrack = useCallback((draft: SimpleTrack) => { dispatch(tracksUpdate(draft)) }, [])
 
     return (
 
@@ -33,17 +31,19 @@ export const PlaylistTracksHooks = (props: Props) => {
 
             <div className="row">
                 <div className="col">
-                    <SearchForm onSearch={() => { }} query='' />
-                    <SelectPlaylist playlists={[]} onSelect={() => { }} />
+                    <SelectPlaylist playlists={playlists} onSelect={selectPlaylistById} />
                     <hr />
 
-                    <TracksList tracks={[]} selected={undefined} onSelect={() => { }} />
+                    {selectedPlaylist && <TracksList
+                        tracks={selectedPlaylistTracks}
+                        selected={selectedTrack?.id}
+                        onSelect={selectTrackById} />}
                 </div>
                 <div className="col">
-                    {false && <TrackDetails track={{} as Track} />}
+                    {selectedTrack && <TrackDetails track={selectedTrack} />}
 
-                    {false && <>
-                        <TrackForm track={{} as Track} onSave={() => { }} />
+                    {selectedTrack && <>
+                        <TrackForm track={selectedTrack} onSave={updateTrack} />
                     </>}
 
                 </div>

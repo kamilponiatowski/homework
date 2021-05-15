@@ -12,6 +12,7 @@ import { store } from './store';
 import { playlistsLoad } from './core/reducers/PlaylistsReducer';
 import { Playlist } from './model/Playlist';
 import { Provider } from 'react-redux';
+import { tracksLoad, tracksPlaylistsLoad } from './core/reducers/TracksReducer';
 
 (window as any).store = store;
 
@@ -54,7 +55,7 @@ const data: Playlist[] = [
     public: true,
     description: 'no i co ja dzis polubie?..🤔',
     tracks: [
-      { id: '123', name: 'Track 123' },
+      { id: '123', name: 'Track ABC' },
       { id: '234', name: 'Track 234' },
       { id: '345', name: 'Track 345' },
     ]
@@ -65,7 +66,7 @@ const data: Playlist[] = [
     public: false,
     description: 'moze polubię TypeScript?. 🚀',
     tracks: [
-      { id: '123a', name: 'Track ABC' },
+      { id: '123', name: 'Track ABC' },
       { id: '234d', name: 'Track DEF' },
       { id: '345b', name: 'Track GHI' },
     ]
@@ -80,4 +81,8 @@ const data: Playlist[] = [
     ]
   },
 ]
-store.dispatch(playlistsLoad(data))
+// store.dispatch(tracksLoad(data[0].tracks!))
+// store.dispatch(tracksLoad(data[1].tracks!))
+// store.dispatch(tracksLoad(data[2].tracks!))
+store.dispatch(tracksPlaylistsLoad(data))
+// store.dispatch(playlistsLoad(data))
