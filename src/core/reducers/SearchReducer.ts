@@ -1,7 +1,6 @@
-import { Reducer } from "react";
 import { AlbumView } from "../../model/Search";
 
-interface State { query: string, isLoading: boolean, message: string, results: AlbumView[] }
+interface SearchState { query: string, isLoading: boolean, message: string, results: AlbumView[] }
 type Actions =
     | SEARCH_START
     | SEARCH_SUCCESS
@@ -16,11 +15,9 @@ export const searchSuccess = (results: AlbumView[]): SEARCH_SUCCESS => ({ type: 
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })
 
 export const initialState = { query: '', isLoading: false, message: '', results: [] as AlbumView[] }
-// Extract Types from existing JS objects and functions:
-// type State = typeof initialState;
-// type SEARCH_START = ReturnType<typeof searchStart>;
 
-const reducer: Reducer<State, Actions> = (state, action) => {
+
+const reducer = (state: SearchState, action: Actions): SearchState => {
 
     switch (action.type) {
         case 'SEARCH_START': return {
@@ -38,4 +35,4 @@ const reducer: Reducer<State, Actions> = (state, action) => {
 
 }
 
-export default reducer
+export default reducer as () => SearchState
