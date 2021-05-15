@@ -52,19 +52,32 @@ const data: Playlist[] = [
     id: '123',
     name: 'Playlista 😇',
     public: true,
-    description: 'no i co ja dzis polubie?..🤔'
+    description: 'no i co ja dzis polubie?..🤔',
+    tracks: [
+      { id: '123', name: 'Track 123' },
+      { id: '234', name: 'Track 234' },
+      { id: '345', name: 'Track 345' },
+    ]
   },
   {
     id: '234',
     name: 'Playlista 😁',
     public: false,
-    description: 'moze polubię TypeScript?. 🚀'
+    description: 'moze polubię TypeScript?. 🚀',
+    tracks: [
+      { id: '123a', name: 'Track ABC' },
+      { id: '234d', name: 'Track DEF' },
+      { id: '345b', name: 'Track GHI' },
+    ]
   },
   {
     id: '345',
     name: 'Playlista 😆',
     public: true,
-    description: 'albo wszystko polubię co mi tam 😅💖'
+    description: 'albo wszystko polubię co mi tam 😅💖',
+    tracks: [
+      { id: '123d', name: 'Track XYZ' },
+    ]
   },
 ]
 store.dispatch(playlistsLoad(data))
