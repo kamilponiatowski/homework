@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
-import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
+import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
 import { AlbumCard } from '../components/AlbumCard'
 
 interface Props {
@@ -27,11 +27,12 @@ export const AlbumDetails = (props: Props) => {
     // Display data + loading + error from reducer
     // Get ID from router
     const dispatch = useDispatch()
-    const { album, isLoading, message } = useSelector(selectAlbumFetchState)
-
+    const { isLoading, message } = useSelector(selectAlbumFetchState)
+    const album = useSelector(selectAlbum)
     const { album_id } = useParams<{ album_id: string }>()
 
     useEffect(() => {
+
         dispatch(fetchAlbumStart(album_id))
 
         fetchAlbumById(album_id)
