@@ -7,14 +7,17 @@ import './core/services';
 import { auth } from './core/services';
 // import { HashRouter as Router } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { UserContextProvider } from './core/contexts/UserContext';
 
 auth.init()
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <UserContextProvider>
+      <Router>
+        <App />
+      </Router>
+    </UserContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
