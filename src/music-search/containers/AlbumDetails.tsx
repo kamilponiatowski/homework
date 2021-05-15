@@ -81,11 +81,16 @@ export const AlbumDetails = (props: Props) => {
                     <SelectPlaylist playlists={[]} onSelect={() => { }} />
 
                     <h3>Tracks</h3>
-                    {album?.tracks.items.map(track =>
+                    {album?.tracks && album.tracks.items.map(track =>
                         <p>
                             .... (+) add to selected playlist
                         </p>
                     )}
+                    {!album?.tracks &&
+                        <div className="alert alert-info" role="alert">
+                            No tracks to display
+                        </div>
+                    }
 
 
                 </div>
