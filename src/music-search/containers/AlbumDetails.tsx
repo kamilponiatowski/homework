@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
 import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
 import SelectPlaylist from '../../playlists/components/SelectPlaylist'
-import { AlbumCard } from '../components/AlbumCard'
+import { AlbumCard, AlbumTrack } from '../components'
 
 interface Props {
 
@@ -23,16 +23,7 @@ interface Props {
 //     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 // }
 
-function msToTime(ms: number) {
-    let seconds = (ms / 1000).toFixed(1);
-    let minutes = (ms / (1000 * 60)).toFixed(1);
-    let hours = (ms / (1000 * 60 * 60)).toFixed(1);
-    let days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
-    if (+seconds < 60) return seconds + " Sec";
-    else if (+minutes < 60) return minutes + " Min";
-    else if (+hours < 24) return hours + " Hrs";
-    else return days + " Days"
-}
+
 
 export const AlbumDetails = (props: Props) => {
     // album_id: 5Tby0U5VndHW0SomYO7Id7
@@ -116,18 +107,7 @@ export const AlbumDetails = (props: Props) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {album.tracks.items.map((track, index) => <tr>
-                                    <th scope="row">{++index}</th>
-                                    <td>
-                                        <a href={track.external_urls.spotify}>{track.name}</a>
-                                    </td>
-                                    <td className="d-flex justify-content-center text-nowrap">{msToTime(track.duration_ms)}</td>
-                                    <td>
-                                        <span className="material-icons">
-                                            add
-                                        </span>
-                                    </td>
-                                </tr>)}
+                                <AlbumTrack tracks={album.tracks}></AlbumTrack>
                             </tbody>
                         </table>
                     }
