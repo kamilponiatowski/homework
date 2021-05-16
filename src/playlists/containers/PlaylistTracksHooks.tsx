@@ -30,7 +30,7 @@ export const PlaylistTracksHooks = (props: Props) => {
 
             <div className="row">
                 <div className="col">
-                    <SelectPlaylist playlists={playlists} onSelect={selectPlaylistById} />
+                    <SelectPlaylist playlists={playlists.items} onSelect={selectPlaylistById} />
                     <hr />
 
                     {selectedPlaylist && <TracksList

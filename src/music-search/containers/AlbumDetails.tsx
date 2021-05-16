@@ -60,8 +60,8 @@ export const AlbumDetails = (props: Props) => {
                             - show tracks
                             - on button click add track to selected playlist
                     */}
-                    <SelectPlaylist playlists={playlists} onSelect={selectPlaylistById} />
-                    <AlbumTracks tracks={album?.tracks!} />
+                    <SelectPlaylist playlists={playlists.items} onSelect={selectPlaylistById} />
+                    <AlbumTracks tracks={album?.tracks} />
                 </div>
             </div>
         </div>

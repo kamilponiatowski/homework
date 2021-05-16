@@ -1,5 +1,7 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { msToTime } from '../../core/helpers/functions'
+import { trackAddToSelectedPlaylist } from '../../core/reducers/TracksReducer'
 import { Track } from '../../model/Search'
 
 interface Props {
@@ -9,6 +11,9 @@ interface Props {
 }
 
 export default function ALbumTrack({ tracks }: Props): ReactElement {
+    const dispatch = useDispatch()
+    const addTrackToSelectedPlaylist = useCallback((track: Track) => { dispatch(trackAddToSelectedPlaylist(track)) }, [])
+
     return (
         <>
             {tracks.items.map((track, index) =>
@@ -21,11 +26,12 @@ export default function ALbumTrack({ tracks }: Props): ReactElement {
                         {msToTime(track.duration_ms)}
                     </td>
                     <td>
-                        <span className="material-icons">
+                        <span className="material-icons cursor-pointer" onClick={() => addTrackToSelectedPlaylist(track)}>
                             add
                         </span>
                     </td>
-                </tr>)}
+                </tr>
+            )}
         </>
     )
 }

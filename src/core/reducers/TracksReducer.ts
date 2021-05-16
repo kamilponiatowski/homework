@@ -4,9 +4,18 @@ import { SimpleTrack, Track } from "../../model/Search";
 import { AppState } from "../../store";
 
 export interface TracksState {
-    playlists: Playlist[]
+    playlists: {
+        items: Playlist[]
+    }
 
-    tracks: { [key: string]: SimpleTrack }
+    tracks: {
+        [key: string]: SimpleTrack
+    }
+    // tracks: {
+    //     playlists: Playlist[]
+    //     tracks: SimpleTrack,
+    //     selectedPlaylistId: string
+    // }
 
     selectedPlaylistId?: Playlist['id']
     selectedTrackId?: Track['id']
@@ -28,6 +37,9 @@ type TRACKS_SELECT = {
 type TRACKS_UPDATE = {
     type: 'TRACKS_UPDATE'; payload: { draft: SimpleTrack; };
 };
+type TRACK_ADD_TO_SELECTED_PLAYLIST = {
+    type: 'TRACK_ADD_TO_SELECTED_PLAYLIST'; payload: { track: Track };
+};
 
 type Actions =
     | PLAYLISTS_LOAD
@@ -35,14 +47,15 @@ type Actions =
     | PLAYLISTS_SELECT
     | TRACKS_SELECT
     | TRACKS_UPDATE
+    | TRACK_ADD_TO_SELECTED_PLAYLIST
 
 const initialState: TracksState = {
-    playlists: [],
+    playlists: { items: [] },
     tracks: {
         // "123": {..track 123..}
     }
 }
-
+// items: [...state.playlists.items, action.payload.track]
 /* Reducer */
 const reducer: Reducer<TracksState, Actions> = (
     state = initialState,
@@ -51,7 +64,7 @@ const reducer: Reducer<TracksState, Actions> = (
     switch (action.type) {
         case 'PLAYLISTS_LOAD': return {
             ...state,
-            playlists: action.payload.items,
+            playlists: { items: action.payload.items },
             tracks: action.payload.items.reduce((tracks, playlist) => {
                 return reduceTracks(tracks, playlist.tracks || [])
             }, state.tracks)
@@ -69,6 +82,50 @@ const reducer: Reducer<TracksState, Actions> = (
             ...state,
             tracks: reduceTracks(state.tracks, action.payload.items)
         }
+        case 'TRACK_ADD_TO_SELECTED_PLAYLIST': {
+            if (!state.selectedPlaylistId) return state
+            // const newPlaylists = state.playlists.items
+            //     .find(p => p.id === state.selectedPlaylistId)
+            const newPlaylists = state.playlists.items.map(p => {
+                if (p.id !== state.selectedPlaylistId) return p
+                return {
+                    ...p,
+                    tracks: [...p.tracks!, action.payload.track]
+                }
+            })
+            // const aaaa = state.playlists.items.reduce((arr, p) => {
+            //     if (p.id !== state.selectedPlaylistId) return [...arr, p]
+            // }, [])
+            console.log(action)
+            console.log(newPlaylists);
+            // console.log(newPlaylists2);
+            return {
+                ...state,
+                playlists: {
+                    // ...state.playlists,
+                    items: newPlaylists
+                }
+                // playlists: {
+                //     ...state.playlists,
+                //     items: [
+                //         ...state.playlists.items,
+
+                //         // ...state.playlists.items,
+                //         // action.payload.track
+                //     ]
+                // }
+                // tracks: {
+                //     ...state.tracks,
+                //     playlists: {
+                //         ...state.playlists.items
+                //     }
+                // }
+            }
+        }
+        // case 'TRACK_ADD_TO_SELECTED_PLAYLIST': return {
+        //     ...state,
+        //     // tracks: state.playlists.find(p => p.id === state.tracks.selectedPlaylistId)
+        // }
         default: return state
     }
 }
@@ -90,15 +147,20 @@ export const tracksPlaylistsSelect = (id: Playlist['id']): PLAYLISTS_SELECT => (
 export const tracksSelect = (id: SimpleTrack['id']): TRACKS_SELECT => ({
     type: 'TRACKS_SELECT', payload: { id }
 })
+
 export const tracksUpdate = (draft: SimpleTrack): TRACKS_UPDATE => ({
     type: 'TRACKS_UPDATE', payload: { draft }
+})
+
+export const trackAddToSelectedPlaylist = (track: Track): TRACK_ADD_TO_SELECTED_PLAYLIST => ({
+    type: 'TRACK_ADD_TO_SELECTED_PLAYLIST', payload: { track }
 })
 
 /* Selectors */
 export const selectPlaylists = (state: AppState) => state.tracks.playlists
 
 export const selectPlaylist = (state: AppState) => {
-    return state.tracks.playlists.find(p => p.id == state.tracks.selectedPlaylistId)
+    return state.tracks.playlists.items.find(p => p.id == state.tracks.selectedPlaylistId)
 }
 
 export const selectSelectedPlaylistTracks = (state: AppState) => {
