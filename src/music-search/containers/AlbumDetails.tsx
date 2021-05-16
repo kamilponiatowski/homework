@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
 import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
-import { selectPlaylists } from '../../core/reducers/TracksReducer'
+import { selectPlaylists, tracksPlaylistsSelect } from '../../core/reducers/TracksReducer'
 import SelectPlaylist from '../../playlists/components/SelectPlaylist'
 import { AlbumCard } from '../components'
 import AlbumTracks from '../components/AlbumTracks'
@@ -15,6 +15,8 @@ interface Props {
 export const AlbumDetails = (props: Props) => {
     const dispatch = useDispatch()
     const playlists = useSelector(selectPlaylists)
+    const selectPlaylistById = useCallback((id: string) => { dispatch(tracksPlaylistsSelect(id)) }, [])
+
     const { isLoading, message } = useSelector(selectAlbumFetchState)
     const album = useSelector(selectAlbum)
     const { album_id } = useParams<{ album_id: string }>()
@@ -58,7 +60,7 @@ export const AlbumDetails = (props: Props) => {
                             - show tracks
                             - on button click add track to selected playlist
                     */}
-                    <SelectPlaylist playlists={playlists} onSelect={() => { }} />
+                    <SelectPlaylist playlists={playlists} onSelect={selectPlaylistById} />
                     <AlbumTracks tracks={album?.tracks!} />
                 </div>
             </div>
