@@ -1,5 +1,4 @@
 import React from 'react';
-import { PlaylistsView } from './playlists/containers/PlaylistsView';
 
 // npm i bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
@@ -7,8 +6,7 @@ import { MusicSearchView } from './music-search/containers/MusicSearchView';
 
 // npm i --save-dev @types/react-router
 import { Redirect, Route, Switch } from 'react-router'
-import { NavBar, UserWidget } from './core/components/NavBar';
-import PlaylistTracks from './playlists/containers/PlaylistTracks';
+import { NavBar } from './core/components/NavBar';
 import { PlaylistsReduxView } from './playlists/containers/PlaylistsReduxView';
 import { PlaylistTracksHooks } from './playlists/containers/PlaylistTracksHooks';
 import { AlbumDetails } from './music-search/containers/AlbumDetails';
@@ -16,7 +14,7 @@ import { AlbumDetails } from './music-search/containers/AlbumDetails';
 function App() {
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       {/* .container>.row>.col */}
       <div className="container">
         <div className="row">

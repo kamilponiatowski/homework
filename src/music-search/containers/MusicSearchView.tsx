@@ -4,7 +4,6 @@ import { useHistory, useLocation } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm';
 import { fetchAlbums } from '../../core/hooks/useSearchAlbums';
 import { searchFailed, searchStart, searchSuccess, selectSearchQuery, selectSearchResults, selectSearchState } from '../../core/reducers/SearchReducer';
-import { AppState } from '../../store';
 import { AlbumGrid } from '../components/AlbumGrid';
 
 interface Props { }

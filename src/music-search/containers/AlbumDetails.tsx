@@ -4,26 +4,12 @@ import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
 import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
 import SelectPlaylist from '../../playlists/components/SelectPlaylist'
-import { AlbumCard, AlbumTrack } from '../components'
+import { AlbumCard } from '../components'
+import AlbumTracks from '../components/AlbumTracks'
 
 interface Props {
 
 }
-
-// function msToTime(duration: number) {
-//     var milliseconds = Math.floor((duration % 1000) / 100),
-//         seconds = Math.floor((duration / 1000) % 60),
-//         minutes = Math.floor((duration / (1000 * 60)) % 60),
-//         hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-//     hours = (hours < 10) ? "0" + hours : hours;
-//     minutes = (minutes < 10) ? "0" + minutes : minutes;
-//     seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-//     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-// }
-
-
 
 export const AlbumDetails = (props: Props) => {
     // album_id: 5Tby0U5VndHW0SomYO7Id7
@@ -86,38 +72,8 @@ export const AlbumDetails = (props: Props) => {
                             - show tracks
                             - on button click add track to selected playlist
                     */}
-
                     <SelectPlaylist playlists={[]} onSelect={() => { }} />
-
-                    <h3 className="mt-2">Tracks {album?.tracks?.total ? `(${album.tracks.total})` : null}</h3>
-                    {album?.tracks &&
-                        <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">
-                                        <div className="d-flex justify-content-center">
-                                            <span className="material-icons">
-                                                schedule
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th scope="col">Add</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <AlbumTrack tracks={album.tracks}></AlbumTrack>
-                            </tbody>
-                        </table>
-                    }
-                    {!album?.tracks &&
-                        <div className="alert alert-info" role="alert">
-                            No tracks to display
-                        </div>
-                    }
-
-
+                    <AlbumTracks tracks={album?.tracks!} />
                 </div>
             </div>
         </div>
