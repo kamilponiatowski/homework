@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
 import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
+import { selectPlaylists } from '../../core/reducers/TracksReducer'
 import SelectPlaylist from '../../playlists/components/SelectPlaylist'
 import { AlbumCard } from '../components'
 import AlbumTracks from '../components/AlbumTracks'
@@ -12,23 +13,8 @@ interface Props {
 }
 
 export const AlbumDetails = (props: Props) => {
-    // album_id: 5Tby0U5VndHW0SomYO7Id7
-
-    // 1. State - What is needed in Component/React
-    // album 
-    // loading
-    // message
-
-    // 2. Action - What we can do
-    // start, success, failed
-
-    // TODO:
-    // Use Fake ID
-    // Fetch data from server
-    // Dispatch data to reducer
-    // Display data + loading + error from reducer
-    // Get ID from router
     const dispatch = useDispatch()
+    const playlists = useSelector(selectPlaylists)
     const { isLoading, message } = useSelector(selectAlbumFetchState)
     const album = useSelector(selectAlbum)
     const { album_id } = useParams<{ album_id: string }>()
@@ -72,7 +58,7 @@ export const AlbumDetails = (props: Props) => {
                             - show tracks
                             - on button click add track to selected playlist
                     */}
-                    <SelectPlaylist playlists={[]} onSelect={() => { }} />
+                    <SelectPlaylist playlists={playlists} onSelect={() => { }} />
                     <AlbumTracks tracks={album?.tracks!} />
                 </div>
             </div>
