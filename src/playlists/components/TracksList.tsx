@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import { useSelector } from 'react-redux'
+import { selectTracks } from '../../core/reducers/TracksReducer'
 import { SimpleTrack, Track } from '../../model/Search'
 
 interface Props {
-    tracks: SimpleTrack[]
+    tracks: SimpleTrack[] | Track[]
     selected?: SimpleTrack['id']
-    onSelect(track: SimpleTrack): void
+    onSelect(track: SimpleTrack | Track): void
 }
 interface State {
 
@@ -12,23 +14,23 @@ interface State {
 
 const classes = (...classes: (string | false)[]) => classes.filter(Boolean).join(' ')
 
-export default class TracksList extends Component<Props, State> {
-    state = {}
+export const TracksList = (props: Props) => {
+    const tracks = useSelector(selectTracks)
 
-    render() {
-        return (
-            <div>
-                PlaylistTracks
+    return (
+        <div>
+            PlaylistTracks
 
-                <div className="list-group">
-                    {this.props.tracks.map(track =>
-                        <div className={classes("list-group-item", this.props.selected === track.id && 'active')}
-                            key={track.id}
-                            onClick={() => this.props.onSelect(track)}>
-                            {track.name}
-                        </div>)}
-                </div>
+            <div className="list-group">
+                {tracks.map((track: Track | SimpleTrack) =>
+                    track && <div
+                        className={classes("list-group-item", props.selected === track?.id && 'active')}
+                        key={track.id}
+                        onClick={() => props.onSelect(track)}>
+                        {track.name}
+                    </div>
+                )}
             </div>
-        )
-    }
+        </div>
+    )
 }

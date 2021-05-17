@@ -1,6 +1,8 @@
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import { UserContext } from '../contexts/UserContext'
+import { tracksPlaylistsSelect } from '../reducers/TracksReducer'
 
 interface Props {
 
@@ -8,6 +10,11 @@ interface Props {
 
 export const NavBar = (props: Props) => {
     const [collapsed, setCollapsed] = useState(true)
+    const dispatch = useDispatch()
+    function setInitPlaylistInTracks() {
+        dispatch(tracksPlaylistsSelect(''))
+    }
+
     return (
         <div>
             <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-3">
@@ -19,7 +26,6 @@ export const NavBar = (props: Props) => {
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-
                     <div className={"collapse navbar-collapse " + (collapsed ? '' : 'show')}>
                         <ul className="navbar-nav">
 
@@ -27,12 +33,11 @@ export const NavBar = (props: Props) => {
                                 <NavLink className="nav-link" to="/playlists" activeClassName="placki active">Playlists</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/search">Search</NavLink>
+                                <NavLink className="nav-link" to="/search" onClick={setInitPlaylistInTracks}>Search</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/tracks">Tracks</NavLink>
+                                <NavLink className="nav-link" to="/tracks" onClick={setInitPlaylistInTracks}>Tracks</NavLink>
                             </li>
-                            {/* <LinkDecorator to="/playlists" className="nav-link" /> */}
                         </ul>
                         <div className="navbar-text ml-auto">
                             <UserWidget />
@@ -55,19 +60,6 @@ export const UserWidget = () => {
     <span className="text-white" onClick={login}> Login</span></span>
 }
 
-{/* <UserContext.Consumer>{({ user, login, logout }) => <>
-{user ?
-    <span>Welcome {user.display_name} |
-    <span className="text-white" onClick={logout}> Logout</span></span>
-    :
-    <span>Welcome Guest |
-    <span className="text-white" onClick={login}> Login</span></span>
-}
-</>}</UserContext.Consumer> */}
-
-
-
-
 export const LinkDecorator: React.FC<
     { to: string } & React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>
 > = ({
@@ -86,7 +78,6 @@ export const LinkDecorator: React.FC<
 
 const IsADecorator: React.FC<{ tag: string }> = ({ tag, children, ...rest }) => React.createElement(tag, { ...rest }, children)
 
-
 const FancyInput = forwardRef(function ({ ...restProps }: any, ref: React.Ref<any>) {
     const inputRef = useRef<any>();
 
@@ -100,5 +91,3 @@ const FancyInput = forwardRef(function ({ ...restProps }: any, ref: React.Ref<an
         <input ref={inputRef} {...restProps} />
     </div>;
 });
-
-{/* <FancyInput ref={mojRef} /> */ }

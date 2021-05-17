@@ -1,13 +1,13 @@
 // tsrcc
-import React, { Component } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm'
 import { Playlist } from '../../model/Playlist'
-import { SimpleTrack, Track } from '../../model/Search'
+import { SimpleTrack } from '../../model/Search'
 import SelectPlaylist from '../components/SelectPlaylist'
 import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
-import TracksList from '../components/TracksList'
+import { TracksList } from '../components/TracksList'
 
 
 const playlistsData: Playlist[] = [
@@ -64,16 +64,6 @@ export default class PlaylistTracks extends MyBaseComponent<Props, State> {
         selectedPlaylist: playlistsData[0]
     }
 
-    // constructor(props: Props) {
-    //     this.state: State = {
-    //         playlists: playlistsData,
-    //         selectedPlaylist: playlistsData[0]
-    //     }
-    //     super(props)
-    //     // this.selectPlaylist = this.selectPlaylist.bind(this);
-    //     this.selectPlaylist = () => this.selectPlaylist;
-    // }
-
     selectTrack = (track: SimpleTrack) => {
         this.setState({ selectedTrack: track })
     }
@@ -81,8 +71,6 @@ export default class PlaylistTracks extends MyBaseComponent<Props, State> {
     placki = 123
 
     selectPlaylist = (playlist_id: Playlist['id']) => {
-        // debugger
-        console.log(this)
         this.setState({
             selectedPlaylist: this.state.playlists.find(p => p.id === playlist_id),
             selectedTrack: undefined
@@ -90,8 +78,6 @@ export default class PlaylistTracks extends MyBaseComponent<Props, State> {
     }
 
     save = (draft: SimpleTrack) => {
-
-        // this.props.match.
 
         this.setState((prevState: State) => {
             return {
@@ -126,7 +112,6 @@ export default class PlaylistTracks extends MyBaseComponent<Props, State> {
 
                 <div className="row">
                     <div className="col">
-                        {/* <SelectPlaylist playlists={this.state.playlists} onSelect={(id) => this.selectPlaylist(id)} /> */}
                         <SearchForm onSearch={() => this.setState({})} query='' />
                         <SelectPlaylist playlists={this.state.playlists} onSelect={this.selectPlaylist} />
                         <hr />

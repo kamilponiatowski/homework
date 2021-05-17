@@ -5,7 +5,7 @@ import { SimpleTrack } from '../../model/Search'
 import SelectPlaylist from '../components/SelectPlaylist'
 import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
-import TracksList from '../components/TracksList'
+import { TracksList } from '../components/TracksList'
 
 interface Props {
 

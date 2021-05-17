@@ -2,21 +2,14 @@ import { Reducer } from "react";
 import { Playlist } from "../../model/Playlist";
 import { SimpleTrack, Track } from "../../model/Search";
 import { AppState } from "../../store";
-
+import Swal from 'sweetalert2'
 export interface TracksState {
     playlists: {
         items: Playlist[]
     }
-
     tracks: {
         [key: string]: SimpleTrack
     }
-    // tracks: {
-    //     playlists: Playlist[]
-    //     tracks: SimpleTrack,
-    //     selectedPlaylistId: string
-    // }
-
     selectedPlaylistId?: Playlist['id']
     selectedTrackId?: Track['id']
 }
@@ -51,11 +44,9 @@ type Actions =
 
 const initialState: TracksState = {
     playlists: { items: [] },
-    tracks: {
-        // "123": {..track 123..}
-    }
+    tracks: {},
 }
-// items: [...state.playlists.items, action.payload.track]
+
 /* Reducer */
 const reducer: Reducer<TracksState, Actions> = (
     state = initialState,
@@ -83,49 +74,28 @@ const reducer: Reducer<TracksState, Actions> = (
             tracks: reduceTracks(state.tracks, action.payload.items)
         }
         case 'TRACK_ADD_TO_SELECTED_PLAYLIST': {
-            if (!state.selectedPlaylistId) return state
-            // const newPlaylists = state.playlists.items
-            //     .find(p => p.id === state.selectedPlaylistId)
-            const newPlaylists = state.playlists.items.map(p => {
-                if (p.id !== state.selectedPlaylistId) return p
-                return {
-                    ...p,
-                    tracks: [...p.tracks!, action.payload.track]
-                }
-            })
-            // const aaaa = state.playlists.items.reduce((arr, p) => {
-            //     if (p.id !== state.selectedPlaylistId) return [...arr, p]
-            // }, [])
-            console.log(action)
-            console.log(newPlaylists);
-            // console.log(newPlaylists2);
+            if (!state.selectedPlaylistId) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'First select the playlist to which you want to add a song. Yrsssss.',
+                })
+                return state
+            }
             return {
                 ...state,
                 playlists: {
-                    // ...state.playlists,
-                    items: newPlaylists
+                    items: state.playlists.items.map(p => {
+                        if (p.id !== state.selectedPlaylistId) return p
+                        if (p.tracks?.find(t => t.id === action.payload.track.id)) return p
+                        return {
+                            ...p,
+                            tracks: [...p.tracks!, action.payload.track]
+                        }
+                    })
                 }
-                // playlists: {
-                //     ...state.playlists,
-                //     items: [
-                //         ...state.playlists.items,
-
-                //         // ...state.playlists.items,
-                //         // action.payload.track
-                //     ]
-                // }
-                // tracks: {
-                //     ...state.tracks,
-                //     playlists: {
-                //         ...state.playlists.items
-                //     }
-                // }
             }
         }
-        // case 'TRACK_ADD_TO_SELECTED_PLAYLIST': return {
-        //     ...state,
-        //     // tracks: state.playlists.find(p => p.id === state.tracks.selectedPlaylistId)
-        // }
         default: return state
     }
 }
@@ -160,7 +130,7 @@ export const trackAddToSelectedPlaylist = (track: Track): TRACK_ADD_TO_SELECTED_
 export const selectPlaylists = (state: AppState) => state.tracks.playlists
 
 export const selectPlaylist = (state: AppState) => {
-    return state.tracks.playlists.items.find(p => p.id == state.tracks.selectedPlaylistId)
+    return state.tracks.playlists.items.find(p => p.id === state.tracks.selectedPlaylistId)
 }
 
 export const selectSelectedPlaylistTracks = (state: AppState) => {
@@ -170,7 +140,7 @@ export const selectSelectedPlaylistTracks = (state: AppState) => {
 export const selectTracks = (state: AppState) => selectPlaylist(state)?.tracks || []
 
 export const selectSelectedTrack = (state: AppState) => {
-    return state.tracks.selectedTrackId && state.tracks.tracks[state.tracks.selectedTrackId] || undefined
+    return (state.tracks.selectedTrackId && state.tracks.tracks[state.tracks.selectedTrackId]) || undefined
 }
 
 

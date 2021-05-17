@@ -1,10 +1,8 @@
 import React from 'react';
 
-// npm i bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 import { MusicSearchView } from './music-search/containers/MusicSearchView';
 
-// npm i --save-dev @types/react-router
 import { Redirect, Route, Switch } from 'react-router'
 import { NavBar } from './core/components/NavBar';
 import { PlaylistsReduxView } from './playlists/containers/PlaylistsReduxView';
@@ -15,7 +13,6 @@ function App() {
   return (
     <div>
       <NavBar />
-      {/* .container>.row>.col */}
       <div className="container">
         <div className="row">
           <div className="col">

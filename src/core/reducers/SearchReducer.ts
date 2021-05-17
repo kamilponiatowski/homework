@@ -31,9 +31,7 @@ export const initialState: SearchState = {
     isLoading: false,
     message: '',
     results: [],
-    entities: {
-        /// "123":{...album...}
-    }
+    entities: {}
 }
 
 const reducer = (
@@ -59,8 +57,7 @@ const reducer = (
         }
         /* ====== One Album ===== */
         case 'FETCH_ALBUM_START': return {
-            ...state, albumId: action.payload.id, 
-            //isLoading: true, message: ''
+            ...state, albumId: action.payload.id,
         }
         case 'FETCH_ALBUM_SUCCESS': return {
             ...state, entities: {
@@ -113,5 +110,5 @@ export const selectSearchResults = (state: AppState): AlbumView[] => {
 
 export const selectAlbumFetchState = (state: AppState) => state.search
 export const selectAlbum = (state: AppState) => {
-    return state.search.albumId? state.search.entities[state.search.albumId] : undefined
+    return state.search.albumId ? state.search.entities[state.search.albumId] : undefined
 }

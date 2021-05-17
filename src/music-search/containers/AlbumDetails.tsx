@@ -20,14 +20,13 @@ export const AlbumDetails = (props: Props) => {
     const { isLoading, message } = useSelector(selectAlbumFetchState)
     const album = useSelector(selectAlbum)
     const { album_id } = useParams<{ album_id: string }>()
-    const [album2, setAlbum2] = useState<any>()
 
     useEffect(() => {
 
         dispatch(fetchAlbumStart(album_id))
 
         fetchAlbumById(album_id)
-            .then(data => { dispatch(fetchAlbumSuccess(data)); setAlbum2(data) })
+            .then(data => { dispatch(fetchAlbumSuccess(data)) })
             .catch(error => { dispatch(fetchAlbumFailed(error)) })
     }, [album_id])
 
@@ -52,14 +51,6 @@ export const AlbumDetails = (props: Props) => {
                 </div>
                 <div className="col-7">
 
-                    {/* 
-                        TODO:
-                            - search results - clicking PhilCollins redirects here with ID
-                            - show list of playlists below
-                            - dispatch select playlist 
-                            - show tracks
-                            - on button click add track to selected playlist
-                    */}
                     <SelectPlaylist playlists={playlists.items} onSelect={selectPlaylistById} />
                     <AlbumTracks tracks={album?.tracks} />
                 </div>

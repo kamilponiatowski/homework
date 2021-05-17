@@ -1,6 +1,5 @@
 import { Reducer } from "redux"
 import { Playlist } from "../../model/Playlist";
-import { Track } from "../../model/Search";
 
 export interface PlaylistsState {
     items: Playlist[]
@@ -27,18 +26,12 @@ type PLAYLISTS_REMOVE = {
     type: 'PLAYLISTS_REMOVE'; payload: { id?: Playlist['id']; };
 };
 
-// type ADD_TRACK_TO_SELECTED_PLAYLIST = {
-//     type: 'ADD_TRACK_TO_SELECTED_PLAYLIST'; payload: { track: Track };
-// };
-
-
 type Actions =
     | PLAYLISTS_LOAD
     | PLAYLISTS_SELECT
     | PLAYLISTS_UPDATE
     | PLAYLISTS_ADD
     | PLAYLISTS_REMOVE
-// | ADD_TRACK_TO_SELECTED_PLAYLIST
 
 const initialState: PlaylistsState = {
     items: [],
@@ -68,22 +61,6 @@ const reducer: Reducer<PlaylistsState, Actions> = (
                 ...state, items: state.items.map(p => p.id === draft.id ? draft : p)
             }
         }
-        // case 'ADD_TRACK_TO_SELECTED_PLAYLIST': {
-        //     if (!state.selectedId) return state
-        //     const newPlaylists = state.items.map(p => {
-        //         if (p.id !== state.selectedId) return p
-        //         return {
-        //             ...p,
-        //             tracks: [...p.tracks!, action.payload.track]
-        //         }
-        //     })
-        //     console.log(action)
-        //     console.log(newPlaylists);
-        //     return {
-        //         ...state,
-        //         items: newPlaylists
-        //     }
-        // }
         default: return state
     }
 }
@@ -109,6 +86,3 @@ export const playlistsAdd = (draft: Playlist): PLAYLISTS_ADD => {
         type: 'PLAYLISTS_ADD', payload: { draft }
     })
 }
-// export const addTrackToSelectedPlaylist = (track: Track): ADD_TRACK_TO_SELECTED_PLAYLIST => ({
-//     type: 'ADD_TRACK_TO_SELECTED_PLAYLIST', payload: { track }
-// })
