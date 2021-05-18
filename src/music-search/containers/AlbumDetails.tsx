@@ -69,7 +69,7 @@ export const AlbumDetails = (props: Props) => {
                         <dd>{album?.artists[0]?.name}</dd>
                     </dl>
 
-                    {/* 
+                    {/*
                         TODO:
                             - search results - clicking PhilCollins redirects here with ID
                             - show list of playlists below
