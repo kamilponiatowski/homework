@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectPlaylist, selectPlaylists, selectSelectedPlaylistTracks, selectSelectedTrack, tracksPlaylistsSelect, tracksSelect, tracksUpdate } from '../../core/reducers/TracksReducer'
-import { SimpleTrack } from '../../model/Search'
+import { SimpleTrack, Track } from '../../model/Search'
 import SelectPlaylist from '../components/SelectPlaylist'
 import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
@@ -20,7 +20,7 @@ export const PlaylistTracksHooks = (props: Props) => {
     const selectedTrack = useSelector(selectSelectedTrack)
 
     const selectPlaylistById = useCallback((id: string) => { dispatch(tracksPlaylistsSelect(id)) }, [])
-    const selectTrackById = useCallback((track: SimpleTrack) => { dispatch(tracksSelect(track.id)) }, [])
+    const selectTrackById = useCallback((track: SimpleTrack | Track) => { dispatch(tracksSelect(track.id)) }, [])
     const updateTrack = useCallback((draft: SimpleTrack) => { dispatch(tracksUpdate(draft)) }, [])
 
     return (

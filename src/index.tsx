@@ -5,23 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './core/services';
 import { auth } from './core/services';
-// import { HashRouter as Router } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserContextProvider } from './core/contexts/UserContext';
 import { store } from './store';
-import { playlistsLoad } from './core/reducers/PlaylistsReducer';
 import { Playlist } from './model/Playlist';
 import { Provider } from 'react-redux';
-import { tracksLoad, tracksPlaylistsLoad } from './core/reducers/TracksReducer';
+import { tracksPlaylistsLoad } from './core/reducers/TracksReducer';
 
 (window as any).store = store;
 
-// store.subscribe(()=> console.log(store.getState()) )
-
-// store.dispatch({type:'INC', payload:42}) 
-
 auth.init();
-
 
 ReactDOM.render(
   <React.StrictMode>
@@ -36,17 +29,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// window.React = React;
-// window.ReactDOM = ReactDOM;
-
-// // If you want to start measuring performance in your app, pass a function
-// // to log results (for example: reportWebVitals(console.log))
-// // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
-
 reportWebVitals()
-
-
 
 const data: Playlist[] = [
   {
@@ -81,8 +64,5 @@ const data: Playlist[] = [
     ]
   },
 ]
-// store.dispatch(tracksLoad(data[0].tracks!))
-// store.dispatch(tracksLoad(data[1].tracks!))
-// store.dispatch(tracksLoad(data[2].tracks!))
+
 store.dispatch(tracksPlaylistsLoad(data))
-// store.dispatch(playlistsLoad(data))

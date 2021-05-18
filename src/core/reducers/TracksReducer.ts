@@ -82,17 +82,21 @@ const reducer: Reducer<TracksState, Actions> = (
                 })
                 return state
             }
+            const playlists = state.playlists.items.map(p => {
+                if (p.id !== state.selectedPlaylistId) return p
+                if (p.tracks?.find(t => t.id === action.payload.track.id)) return p
+                return {
+                    ...p,
+                    tracks: [...p.tracks!, action.payload.track]
+                }
+            })
             return {
                 ...state,
+                tracks: playlists.reduce((tracks, playlist) => {
+                    return reduceTracks(tracks, playlist.tracks || [])
+                }, state.tracks),
                 playlists: {
-                    items: state.playlists.items.map(p => {
-                        if (p.id !== state.selectedPlaylistId) return p
-                        if (p.tracks?.find(t => t.id === action.payload.track.id)) return p
-                        return {
-                            ...p,
-                            tracks: [...p.tracks!, action.payload.track]
-                        }
-                    })
+                    items: playlists
                 }
             }
         }
@@ -114,7 +118,7 @@ export const tracksPlaylistsSelect = (id: Playlist['id']): PLAYLISTS_SELECT => (
     type: 'PLAYLISTS_SELECT', payload: { id }
 })
 
-export const tracksSelect = (id: SimpleTrack['id']): TRACKS_SELECT => ({
+export const tracksSelect = (id: SimpleTrack['id'] | Track['id']): TRACKS_SELECT => ({
     type: 'TRACKS_SELECT', payload: { id }
 })
 
