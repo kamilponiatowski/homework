@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router'
 import { AlbumView } from '../../model/Search'
 
 interface Props {
@@ -6,8 +7,11 @@ interface Props {
 }
 
 export const AlbumCard = ({ album }: Props) => {
+
+    const { push } = useHistory()
+
     return (
-        <div className="card h-100">
+        <div className="card h-100" onClick={() => push('/albums/' + album.id)}>
             <img src={album.images[0].url} className="card-img-top" alt={album.name} />
 
             <div className="card-body">

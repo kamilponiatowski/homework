@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { fetchAlbumById } from '../../core/hooks/usePlaylists'
+import { trackAddToPlaylist } from '../../core/reducers/actions'
+import { playlistsSelect, selectPlaylists, selectSelectedPlaylist } from '../../core/reducers/PlaylistsReducer'
 import { fetchAlbumFailed, fetchAlbumStart, fetchAlbumSuccess, selectAlbum, selectAlbumFetchState } from '../../core/reducers/SearchReducer'
+import { Playlist } from '../../model/Playlist'
+import { SimpleTrack } from '../../model/Search'
 import SelectPlaylist from '../../playlists/components/SelectPlaylist'
 import { AlbumCard } from '../components/AlbumCard'
 
@@ -13,24 +17,20 @@ interface Props {
 export const AlbumDetails = (props: Props) => {
     // album_id: 5Tby0U5VndHW0SomYO7Id7
 
-    // 1. State - What is needed in Component/React
-    // album 
-    // loading
-    // message
-
-    // 2. Action - What we can do
-    // start, success, failed
-
-    // TODO:
-    // Use Fake ID
-    // Fetch data from server
-    // Dispatch data to reducer
-    // Display data + loading + error from reducer
-    // Get ID from router
     const dispatch = useDispatch()
     const { isLoading, message } = useSelector(selectAlbumFetchState)
+
+    const allPlaylists = useSelector(selectPlaylists)
+    const selectedPlaylist = useSelector(selectSelectedPlaylist)
     const album = useSelector(selectAlbum)
     const { album_id } = useParams<{ album_id: string }>()
+
+    const selectPlaylist = useCallback((id: Playlist['id']) => { dispatch(playlistsSelect(id)) }, [])
+
+    const addToPlaylist = useCallback((track: SimpleTrack) => {
+        if (!selectedPlaylist) { return }
+        dispatch(trackAddToPlaylist(track, selectedPlaylist?.id))
+    }, [selectedPlaylist?.id])
 
     useEffect(() => {
 
@@ -46,27 +46,28 @@ export const AlbumDetails = (props: Props) => {
     if (message) {
         return <p className="alert alert-danger">{message}</p>
     }
+    if (!album) { return <></> }
 
     return (
         <div>
             <div className="row">
                 <div className="col">
                     <small className="text-muted">{album_id}</small>
-                    <h1>{album?.name}</h1>
+                    <h1>{album.name}</h1>
                 </div>
             </div>
             <div className="row">
                 <div className="col">
-                    {album && <AlbumCard album={album} />}
+                    <AlbumCard album={album} />
                 </div>
                 <div className="col">
 
                     <dl>
                         <dt>Album name:</dt>
-                        <dd>{album?.name}</dd>
+                        <dd>{album.name}</dd>
 
                         <dt>Artist:</dt>
-                        <dd>{album?.artists[0]?.name}</dd>
+                        <dd>{album.artists[0]?.name}</dd>
                     </dl>
 
                     {/*
@@ -78,14 +79,18 @@ export const AlbumDetails = (props: Props) => {
                             - on button click add track to selected playlist
                     */}
 
-                    <SelectPlaylist playlists={[]} onSelect={() => { }} />
+                    <SelectPlaylist playlists={allPlaylists} onSelect={selectPlaylist} />
 
                     <h3>Tracks</h3>
-                    {album?.tracks.items.map(track =>
-                        <p>
-                            .... (+) add to selected playlist
-                        </p>
-                    )}
+                    <div className="list-group">
+
+                        {album.tracks.items.map(track =>
+                            <div className="list-group-item">
+                                {track.name} <button className="btn btn-light float-right"
+                                    onClick={() => addToPlaylist(track)}>+</button>
+                            </div>
+                        )}
+                    </div>
 
 
                 </div>

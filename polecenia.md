@@ -137,3 +137,27 @@ https://pl.wikipedia.org/wiki/YAGNI
 
 ## Rest client
 https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+
+## Redux - normalizacja stanu
+https://github.com/paularmstrong/normalizr
+https://github.com/reduxjs/reselect
+
+
+## Connect + MapStateTo Props
+...
+
+
+## Async Action Creators 
+- middleware
+...
+
+
+## Projekt JS
+- create-react-app (js)
+- bootstrap
+- json-server
+- redux + react-redux
+- router
+- styled components (storybook)
+- jest + testing-library

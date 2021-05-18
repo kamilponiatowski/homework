@@ -24,8 +24,8 @@ const reducer = combineReducers({
     // counter: counter,  // Slice Reducer
     counter,
     playlists,
-    search: search,
-    tracks: tracks
+    search,
+    tracks
 })
 
 export type AppState = ReturnType<typeof reducer>
