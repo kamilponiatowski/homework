@@ -87,8 +87,8 @@ export const tracksPlaylistsSelect = (id: Playlist['id']): PLAYLISTS_SELECT => (
     type: 'PLAYLISTS_SELECT', payload: { id }
 })
 
-export const tracksSelect = (id: SimpleTrack['id']): TRACKS_SELECT => ({
-    type: 'TRACKS_SELECT', payload: { id }
+export const tracksSelect = (track: SimpleTrack): TRACKS_SELECT => ({
+    type: 'TRACKS_SELECT', payload: { id: track.id }
 })
 export const tracksUpdate = (draft: SimpleTrack): TRACKS_UPDATE => ({
     type: 'TRACKS_UPDATE', payload: { draft }

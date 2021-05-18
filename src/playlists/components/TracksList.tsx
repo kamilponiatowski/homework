@@ -4,7 +4,7 @@ import { SimpleTrack, Track } from '../../model/Search'
 interface Props {
     tracks: SimpleTrack[]
     selected?: SimpleTrack['id']
-    onSelect(track: SimpleTrack): void
+    onSelect(track: SimpleTrack): any
 }
 interface State {
 

@@ -30,7 +30,7 @@ Zadanie 10 - Excercise - redirect to album details from search, add album track
     - show tracks
     - on button click add track to selected playlist
 
-
+git show-branch --topo-order
 git branch -m old new
 git branch newcopy old
 
