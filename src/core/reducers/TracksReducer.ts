@@ -66,8 +66,23 @@ const reducer: Reducer<TracksState, Actions> = (
         case 'TRACKS_SELECT': return {
             ...state, selectedTrackId: action.payload.id
         }
-        case 'TRACKS_UPDATE': return {
-            ...state, tracks: { ...state.tracks, [action.payload.draft.id]: action.payload.draft }
+        case 'TRACKS_UPDATE': {
+            return {
+                ...state,
+                tracks: { ...state.tracks, [action.payload.draft.id]: action.payload.draft },
+                playlists: {
+                    items: state.playlists.items.map(p => {
+                        if (p.id !== state.selectedPlaylistId) return p
+                        return {
+                            ...p,
+                            tracks: p.tracks?.map(t => {
+                                if (t.id !== action.payload.draft.id) return t
+                                return action.payload.draft
+                            })
+                        }
+                    })
+                }
+            }
         }
         case 'TRACKS_LOAD': return {
             ...state,
@@ -122,7 +137,7 @@ export const tracksSelect = (id: SimpleTrack['id'] | Track['id']): TRACKS_SELECT
     type: 'TRACKS_SELECT', payload: { id }
 })
 
-export const tracksUpdate = (draft: SimpleTrack): TRACKS_UPDATE => ({
+export const tracksUpdate = (draft: SimpleTrack | Track): TRACKS_UPDATE => ({
     type: 'TRACKS_UPDATE', payload: { draft }
 })
 

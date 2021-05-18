@@ -21,7 +21,7 @@ export const PlaylistTracksHooks = (props: Props) => {
 
     const selectPlaylistById = useCallback((id: string) => { dispatch(tracksPlaylistsSelect(id)) }, [])
     const selectTrackById = useCallback((track: SimpleTrack | Track) => { dispatch(tracksSelect(track.id)) }, [])
-    const updateTrack = useCallback((draft: SimpleTrack) => { dispatch(tracksUpdate(draft)) }, [])
+    const updateTrack = useCallback((draft: SimpleTrack | Track) => { dispatch(tracksUpdate(draft)) }, [])
 
     return (
 
