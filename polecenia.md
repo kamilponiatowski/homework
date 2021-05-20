@@ -152,6 +152,9 @@ https://react-redux.js.org/tutorials/connect#connecting-the-components
 https://redux.js.org/tutorials/fundamentals/part-4-store#middleware
 - middleware
 - Interceptor for dispatched actions before reducer
+
+- POWTÓRZYĆ:
+- https://developer.mozilla.org/pl/docs/Web/JavaScript/Guide/Iterators_and_Generators
 ...
 
 
