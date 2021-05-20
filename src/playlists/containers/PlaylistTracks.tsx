@@ -2,143 +2,56 @@
 import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm'
+import { UserContext } from '../../core/contexts/UserContext'
 import { Playlist } from '../../model/Playlist'
 import { SimpleTrack, Track } from '../../model/Search'
+import { store } from '../../store'
 import SelectPlaylist from '../components/SelectPlaylist'
 import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
 import TracksList from '../components/TracksList'
 
 
-const playlistsData: Playlist[] = [
-    {
-        id: '123',
-        name: 'Playlista 😇',
-        public: true,
-        description: 'no i co ja dzis polubie?..🤔',
-        tracks: [
-            { id: '123', name: 'Track 123' },
-            { id: '234', name: 'Track 234' },
-            { id: '345', name: 'Track 345' },
-        ]
-    },
-    {
-        id: '234',
-        name: 'Playlista 😁',
-        public: false,
-        description: 'moze polubię TypeScript?. 🚀',
-        tracks: [
-            { id: '123a', name: 'Track ABC' },
-            { id: '234d', name: 'Track DEF' },
-            { id: '345b', name: 'Track GHI' },
-        ]
-    },
-    {
-        id: '345',
-        name: 'Playlista 😆',
-        public: true,
-        description: 'albo wszystko polubię co mi tam 😅💖',
-        tracks: [
-            { id: '123d', name: 'Track XYZ' },
-        ]
-    },
-]
-
 
 interface Props extends RouteComponentProps {
-
-}
-interface State {
     playlists: Playlist[]
     selectedPlaylist?: Playlist
     selectedTrack?: SimpleTrack
 }
-
-export class MyBaseComponent<Props, State> extends React.Component<Props, State> {
-    reusableBaseMethod() { }
-}
-
-export default class PlaylistTracks extends MyBaseComponent<Props, State> {
-    state: State = {
-        playlists: playlistsData,
-        selectedPlaylist: playlistsData[0]
-    }
-
-    // constructor(props: Props) {
-    //     this.state: State = {
-    //         playlists: playlistsData,
-    //         selectedPlaylist: playlistsData[0]
-    //     }
-    //     super(props)
-    //     // this.selectPlaylist = this.selectPlaylist.bind(this);
-    //     this.selectPlaylist = () => this.selectPlaylist;
-    // }
-
-    selectTrack = (track: SimpleTrack) => {
-        this.setState({ selectedTrack: track })
-    }
-
-    placki = 123
-
-    selectPlaylist = (playlist_id: Playlist['id']) => {
-        // debugger
-        console.log(this)
-        this.setState({
-            selectedPlaylist: this.state.playlists.find(p => p.id === playlist_id),
-            selectedTrack: undefined
-        })
-    }
-
-    save = (draft: SimpleTrack) => {
-
-        // this.props.match.
-
-        this.setState((prevState: State) => {
-            return {
-                selectedPlaylist: {
-                    ...prevState.selectedPlaylist!,
-                    tracks: prevState.selectedPlaylist?.tracks?.map(t => t.id === draft.id ? draft : t) || []
-                }
-            }
-        }, () => { })
+interface State { }
 
 
-        this.setState((prevState: State) => {
-            return {
-                playlists: prevState.playlists.map(p => p.id !== prevState.selectedPlaylist?.id ? p : prevState.selectedPlaylist!),
-            }
-        }, () => { })
-
-        this.reusableBaseMethod()
-    }
-
+export default class PlaylistTracks extends Component<Props, State> {
     formRef = React.createRef<TrackForm>()
 
-    reset = () => {
-        this.formRef.current?.resetForm()
+    static defaultProps = {
+        playlists: [],
     }
 
+    selectTrack = (track: SimpleTrack) => { }
+    selectPlaylist = (playlist_id: Playlist['id']) => { }
+    save = (draft: SimpleTrack) => { }
+    reset = () => { }
+
     render() {
-        console.log('render', this.state.selectedPlaylist?.tracks![0].name)
         return (
             <div>
                 PlaylistTracks
 
                 <div className="row">
                     <div className="col">
-                        {/* <SelectPlaylist playlists={this.state.playlists} onSelect={(id) => this.selectPlaylist(id)} /> */}
                         <SearchForm onSearch={() => this.setState({})} query='' />
-                        <SelectPlaylist playlists={this.state.playlists} onSelect={this.selectPlaylist} />
+                        <SelectPlaylist playlists={this.props.playlists} onSelect={this.selectPlaylist} />
                         <hr />
 
-                        {this.state.selectedPlaylist?.tracks?.length &&
-                            <TracksList tracks={this.state.selectedPlaylist!.tracks} selected={this.state.selectedTrack?.id} onSelect={this.selectTrack} />}
+                        {this.props.selectedPlaylist?.tracks?.length &&
+                            <TracksList tracks={this.props.selectedPlaylist!.tracks} selected={this.props.selectedTrack?.id} onSelect={this.selectTrack} />}
                     </div>
                     <div className="col">
-                        {this.state.selectedTrack && <TrackDetails track={this.state.selectedTrack} />}
+                        {this.props.selectedTrack && <TrackDetails track={this.props.selectedTrack} />}
 
-                        {this.state.selectedTrack && <>
-                            <TrackForm track={this.state.selectedTrack} onSave={this.save} ref={this.formRef} />
+                        {this.props.selectedTrack && <>
+                            <TrackForm track={this.props.selectedTrack} onSave={this.save} ref={this.formRef} />
                             <button className="btn btn-danger" onClick={this.reset}>Reset</button>
                         </>}
 
@@ -148,3 +61,40 @@ export default class PlaylistTracks extends MyBaseComponent<Props, State> {
         )
     }
 }
+
+
+
+
+// const playlistsData: Playlist[] = [
+//     {
+//         id: '123',
+//         name: 'Playlista 😇',
+//         public: true,
+//         description: 'no i co ja dzis polubie?..🤔',
+//         tracks: [
+//             { id: '123', name: 'Track 123' },
+//             { id: '234', name: 'Track 234' },
+//             { id: '345', name: 'Track 345' },
+//         ]
+//     },
+//     {
+//         id: '234',
+//         name: 'Playlista 😁',
+//         public: false,
+//         description: 'moze polubię TypeScript?. 🚀',
+//         tracks: [
+//             { id: '123a', name: 'Track ABC' },
+//             { id: '234d', name: 'Track DEF' },
+//             { id: '345b', name: 'Track GHI' },
+//         ]
+//     },
+//     {
+//         id: '345',
+//         name: 'Playlista 😆',
+//         public: true,
+//         description: 'albo wszystko polubię co mi tam 😅💖',
+//         tracks: [
+//             { id: '123d', name: 'Track XYZ' },
+//         ]
+//     },
+// ]

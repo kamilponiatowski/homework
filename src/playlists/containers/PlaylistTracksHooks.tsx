@@ -10,9 +10,7 @@ import TrackForm from '../components/TrackForm'
 import TracksList from '../components/TracksList'
 
 
-interface Props {
-
-}
+interface Props {}
 
 export const PlaylistTracksHooks = (props: Props) => {
     const dispatch = useDispatch()
@@ -30,11 +28,9 @@ export const PlaylistTracksHooks = (props: Props) => {
     const selectedTrack = useSelector(selectSelectedTrack)
 
     const selectPlaylistById = useCallback((id: string) => { dispatch(tracksPlaylistsSelect(id)) }, [])
-    // const selectTrackById = useCallback((track: SimpleTrack) => { dispatch(tracksSelect(track)) }, [])
     const updateTrack = useCallback((draft: SimpleTrack) => { dispatch(tracksUpdate(draft)) }, [])
 
     return (
-
         <div>
             PlaylistTracks
 

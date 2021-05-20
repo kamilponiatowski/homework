@@ -159,5 +159,5 @@ https://github.com/reduxjs/reselect
 - json-server
 - redux + react-redux
 - router
-- styled components (storybook)
+<!-- - styled components (storybook) -->
 - jest + testing-library
