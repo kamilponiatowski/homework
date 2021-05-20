@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm'
 import { UserContext } from '../../core/contexts/UserContext'
 import { selectPlaylists } from '../../core/reducers/PlaylistsReducer'
-import { selectPlaylist, selectSelectedTrack, tracksPlaylistsSelect, tracksUpdate } from '../../core/reducers/TracksReducer'
+import { selectPlaylist, selectSelectedPlaylistTracks, selectSelectedTrack, tracksPlaylistsSelect, tracksUpdate } from '../../core/reducers/TracksReducer'
 import { Playlist } from '../../model/Playlist'
 import { SimpleTrack, Track } from '../../model/Search'
 import { AppState, store } from '../../store'
@@ -77,7 +77,7 @@ const mapStateToProps: MapStateToPropsParam<PropsFromState, PropsNotFromState, A
     playlists: selectPlaylists(state),
     selectedPlaylist: selectPlaylist(state/* , ownProps.match.params.playlist_id */),
     selectedTrack: selectSelectedTrack(state),
-    selectedPlaylistTracks: selectSelectedTrack(state)
+    selectedPlaylistTracks: selectSelectedPlaylistTracks(state)
 })
 
 type TDispatchProps = {
