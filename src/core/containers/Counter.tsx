@@ -1,7 +1,7 @@
 import React from "react";
 import { FC, useState } from "react";
 
-
+// https://github.com/acdlite/recompose 
 
 
 class RegularLink extends React.Component<{ to: string, onClick: Function, color: string }>{
@@ -32,14 +32,14 @@ const withActionState = (Component: React.ComponentType<any>): FC<any> => {
     return (props) => {
         const [counter, setCounter] = useState(0)
 
-        return <Component onClick={() => setCounter(counter + 1)}>{counter}</Component>
+        return <Component action={() => setCounter(counter + 1)} state={counter}></Component>
     }
 }
-const Clickable = (props: { children: any, onClick: any }) => <div onClick={props.onClick}>
-    {props.children}
+const Clickable = (props: { state: any, action: any }) => <div onClick={props.action}>
+    <h1>{props.state}</h1>
 </div>;
-
 const Counter = withActionState(Clickable);
+
 <Counter />
 
 // const withColor2 = function <T, C = { color: string }>(color: string, Component: React.ComponentType<T>) {
