@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm'
 import { UserContext } from '../../core/contexts/UserContext'
 import { selectPlaylists } from '../../core/reducers/PlaylistsReducer'
-import { selectPlaylist, selectSelectedPlaylistTracks, selectSelectedTrack, tracksPlaylistsSelect, tracksUpdate } from '../../core/reducers/TracksReducer'
+import { selectPlaylist, selectSelectedPlaylistTracks, selectSelectedTrack, tracksPlaylistsSelect, tracksUpdate, tracksSelect } from '../../core/reducers/TracksReducer'
 import { Playlist } from '../../model/Playlist'
 import { SimpleTrack, Track } from '../../model/Search'
 import { AppState, store } from '../../store'
@@ -13,7 +13,7 @@ import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
 import TracksList from '../components/TracksList'
 import { connect, MapDispatchToPropsParam, MapStateToPropsParam } from 'react-redux' // <- read the docs!
-import { Dispatch } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 
 
 interface Props extends RouteComponentProps {
@@ -21,6 +21,7 @@ interface Props extends RouteComponentProps {
     selectedPlaylist?: Playlist
     selectedPlaylistTracks: SimpleTrack[]
     selectedTrack?: SimpleTrack
+    tracksSelect(track: SimpleTrack): any
     tracksPlaylistsSelect(id: string): any,
     tracksUpdate(draft: SimpleTrack): any,
 }
@@ -30,38 +31,23 @@ interface State { }
 export default class PlaylistTracks extends Component<Props, State> {
     formRef = React.createRef<TrackForm>()
 
-    static defaultProps = {
-        playlists: [],
-    }
-
-    selectTrack = (track: SimpleTrack) => { }
-    selectPlaylist = (playlist_id: Playlist['id']) => { }
-    save = (draft: SimpleTrack) => { }
-    reset = () => { }
-
     render() {
         return (
             <div>
                 PlaylistTracks
-
                 <div className="row">
                     <div className="col">
-                        <SearchForm onSearch={() => this.setState({})} query='' />
-                        <SelectPlaylist playlists={this.props.playlists} onSelect={this.selectPlaylist} />
+                        <SelectPlaylist playlists={this.props.playlists} onSelect={this.props.tracksPlaylistsSelect} />
                         <hr />
-
                         {this.props.selectedPlaylist?.tracks?.length &&
                             <TracksList tracks={this.props.selectedPlaylistTracks}
-                                selected={this.props.selectedTrack?.id} onSelect={this.selectTrack} />}
+                                selected={this.props.selectedTrack?.id} onSelect={this.props.tracksSelect} />}
                     </div>
                     <div className="col">
                         {this.props.selectedTrack && <TrackDetails track={this.props.selectedTrack} />}
-
                         {this.props.selectedTrack && <>
-                            <TrackForm track={this.props.selectedTrack} onSave={this.save} ref={this.formRef} />
-                            <button className="btn btn-danger" onClick={this.reset}>Reset</button>
+                            <TrackForm track={this.props.selectedTrack} onSave={this.props.tracksUpdate} ref={this.formRef} />
                         </>}
-
                     </div>
                 </div>
             </div>
@@ -70,35 +56,51 @@ export default class PlaylistTracks extends Component<Props, State> {
 }
 
 
-type PropsFromState = { playlists: Playlist[] };
-type PropsNotFromState = RouteComponentProps
-
-const mapStateToProps: MapStateToPropsParam<PropsFromState, PropsNotFromState, AppState> = (state, ownProps) => ({
-    playlists: selectPlaylists(state),
-    selectedPlaylist: selectPlaylist(state/* , ownProps.match.params.playlist_id */),
-    selectedTrack: selectSelectedTrack(state),
-    selectedPlaylistTracks: selectSelectedPlaylistTracks(state)
-})
-
-type TDispatchProps = {
-    tracksPlaylistsSelect(id: string): any,
-    tracksUpdate(draft: SimpleTrack): any,
-}
-const mapDispatchToProps: MapDispatchToPropsParam<TDispatchProps, PropsNotFromState> = (
-    dispatch: Dispatch, ownProps: PropsNotFromState
-) => ({
-    tracksPlaylistsSelect: (id: string) => { dispatch(tracksPlaylistsSelect(id)) },
-    tracksUpdate: (draft: SimpleTrack) => { dispatch(tracksUpdate(draft)) }
-})
-
-// const withPlaylistsRedux = connect(mapStateToProps)
-// export const PlaylistTracksWithRedux = withPlaylistsRedux(PlaylistTracks)
-
 export const PlaylistTracksWithRedux = connect(
-    mapStateToProps,
-    mapDispatchToProps,
+    (state: AppState, ownProps) => ({
+        playlists: selectPlaylists(state),
+        selectedPlaylist: selectPlaylist(state/* , ownProps.match.params.playlist_id */),
+        selectedTrack: selectSelectedTrack(state),
+        selectedPlaylistTracks: selectSelectedPlaylistTracks(state)
+    }),
+    (dispatch: Dispatch, ownProps: {}) => bindActionCreators({
+        tracksPlaylistsSelect,
+        tracksSelect,
+        tracksUpdate
+    }, dispatch),
     // (stateProps: PropsFromState, dispatchProps: TDispatchProps, ownProps: PropsNotFromState) => ({ ... })
 )(PlaylistTracks)
+
+
+// type PropsFromState = { playlists: Playlist[] };
+// type PropsNotFromState = RouteComponentProps
+
+// const mapStateToProps: MapStateToPropsParam<PropsFromState, PropsNotFromState, AppState> = (state, ownProps) => ({
+//     playlists: selectPlaylists(state),
+//     selectedPlaylist: selectPlaylist(state/* , ownProps.match.params.playlist_id */),
+//     selectedTrack: selectSelectedTrack(state),
+//     selectedPlaylistTracks: selectSelectedPlaylistTracks(state)
+// })
+
+// type TDispatchProps = {
+//     tracksPlaylistsSelect(id: string): any,
+//     tracksUpdate(draft: SimpleTrack): any,
+// }
+// const mapDispatchToProps: MapDispatchToPropsParam<TDispatchProps, PropsNotFromState> = (
+//     dispatch: Dispatch, ownProps: PropsNotFromState
+// ) => ({
+//     tracksPlaylistsSelect: (id: string) => { dispatch(tracksPlaylistsSelect(id)) },
+//     tracksUpdate: (draft: SimpleTrack) => { dispatch(tracksUpdate(draft)) }
+// })
+
+// // const withPlaylistsRedux = connect(mapStateToProps)
+// // export const PlaylistTracksWithRedux = withPlaylistsRedux(PlaylistTracks)
+
+// export const PlaylistTracksWithRedux = connect(
+//     mapStateToProps,
+//     mapDispatchToProps,
+//     // (stateProps: PropsFromState, dispatchProps: TDispatchProps, ownProps: PropsNotFromState) => ({ ... })
+// )(PlaylistTracks)
 
 
 
