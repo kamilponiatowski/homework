@@ -5,6 +5,7 @@ interface Props {
     tracks: SimpleTrack[]
     selected?: SimpleTrack['id']
     onSelect(track: SimpleTrack): any
+    onRemove?(track: SimpleTrack['id']): any
 }
 interface State {
 
@@ -26,6 +27,10 @@ export default class TracksList extends Component<Props, State> {
                             key={track.id}
                             onClick={() => this.props.onSelect(track)}>
                             {track.name}
+
+                            {this.props.onRemove &&
+                                <span className="close" onClick={() => this.props.onRemove && this.props.onRemove(track.id)}>&times;</span>
+                            }
                         </div>)}
                 </div>
             </div>

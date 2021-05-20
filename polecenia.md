@@ -145,11 +145,13 @@ https://github.com/reduxjs/reselect
 
 
 ## Connect + MapStateTo Props
-...
+https://react-redux.js.org/tutorials/connect#connecting-the-components
 
 
 ## Async Action Creators 
+https://redux.js.org/tutorials/fundamentals/part-4-store#middleware
 - middleware
+- Interceptor for dispatched actions before reducer
 ...
 
 

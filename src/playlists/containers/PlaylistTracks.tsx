@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm'
 import { UserContext } from '../../core/contexts/UserContext'
-import { selectPlaylists } from '../../core/reducers/PlaylistsReducer'
+import { playlistsTrackRemove, selectPlaylists } from '../../core/reducers/PlaylistsReducer'
 import { selectPlaylist, selectSelectedPlaylistTracks, selectSelectedTrack, tracksPlaylistsSelect, tracksUpdate, tracksSelect } from '../../core/reducers/TracksReducer'
 import { Playlist } from '../../model/Playlist'
 import { SimpleTrack, Track } from '../../model/Search'
@@ -21,9 +21,10 @@ interface Props extends RouteComponentProps {
     selectedPlaylist?: Playlist
     selectedPlaylistTracks: SimpleTrack[]
     selectedTrack?: SimpleTrack
+    playlistsTrackRemove(id: string): any
     tracksSelect(track: SimpleTrack): any
-    tracksPlaylistsSelect(id: string): any,
-    tracksUpdate(draft: SimpleTrack): any,
+    tracksPlaylistsSelect(id: string): any
+    tracksUpdate(draft: SimpleTrack): any
 }
 interface State { }
 
@@ -41,7 +42,9 @@ export default class PlaylistTracks extends Component<Props, State> {
                         <hr />
                         {this.props.selectedPlaylist?.tracks?.length &&
                             <TracksList tracks={this.props.selectedPlaylistTracks}
-                                selected={this.props.selectedTrack?.id} onSelect={this.props.tracksSelect} />}
+                                selected={this.props.selectedTrack?.id}
+                                onSelect={this.props.tracksSelect}
+                                onRemove={this.props.playlistsTrackRemove} />}
                     </div>
                     <div className="col">
                         {this.props.selectedTrack && <TrackDetails track={this.props.selectedTrack} />}
@@ -65,6 +68,7 @@ export const PlaylistTracksWithRedux = connect(
     }),
     (dispatch: Dispatch, ownProps: {}) => bindActionCreators({
         tracksPlaylistsSelect,
+        playlistsTrackRemove,
         tracksSelect,
         tracksUpdate
     }, dispatch),

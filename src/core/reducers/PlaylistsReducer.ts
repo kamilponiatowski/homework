@@ -1,5 +1,6 @@
 import { Reducer } from "redux"
 import { Playlist } from "../../model/Playlist";
+import { SimpleTrack } from "../../model/Search";
 import { AppState } from "../../store";
 import { PLAYLISTS_LOAD, PLAYLISTS_SELECT, TRACKS_ADD_TO_PLAYLIST } from "./actions";
 
@@ -16,6 +17,9 @@ type PLAYLISTS_ADD = {
     type: 'PLAYLISTS_ADD'; payload: { draft: Playlist; };
 };
 
+type PLAYLISTS_REMOVE_TRACK = {
+    type: 'PLAYLISTS_REMOVE_TRACK'; payload: { id: SimpleTrack['id']; };
+};
 
 type PLAYLISTS_REMOVE = {
     type: 'PLAYLISTS_REMOVE'; payload: { id?: Playlist['id']; };
@@ -29,6 +33,7 @@ type Actions =
     | PLAYLISTS_ADD
     | PLAYLISTS_REMOVE
     | TRACKS_ADD_TO_PLAYLIST
+    | PLAYLISTS_REMOVE_TRACK
 
 const initialState: PlaylistsState = {
     items: [],
@@ -58,6 +63,16 @@ const reducer: Reducer<PlaylistsState, Actions> = (
                 ...state, items: state.items.map(p => p.id === draft.id ? draft : p)
             }
         }
+        case 'PLAYLISTS_REMOVE_TRACK': return {
+            ...state,
+            items: state.items.map(playlist => {
+                if (playlist.id !== state.selectedId) { return playlist }
+                return {
+                    ...playlist,
+                    tracks: playlist.tracks?.filter(t => t.id !== action.payload.id)
+                }
+            })
+        }
         case 'TRACKS_ADD_TO_PLAYLIST': return {
             ...state,
             items: state.items.map(playlist => {
@@ -84,6 +99,9 @@ export const playlistsLoad = (items: Playlist[]): PLAYLISTS_LOAD => ({
 })
 export const playlistsSelect = (id: Playlist['id']): PLAYLISTS_SELECT => ({
     type: 'PLAYLISTS_SELECT', payload: { id }
+})
+export const playlistsTrackRemove = (id: Playlist['id']): PLAYLISTS_REMOVE_TRACK => ({
+    type: 'PLAYLISTS_REMOVE_TRACK', payload: { id }
 })
 export const playlistsRemove = (id: Playlist['id']): PLAYLISTS_REMOVE => ({
     type: 'PLAYLISTS_REMOVE', payload: { id }

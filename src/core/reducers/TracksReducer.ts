@@ -15,12 +15,13 @@ type TRACKS_LOAD = {
 type TRACKS_SELECT = {
     type: 'TRACKS_SELECT'; payload: { id: SimpleTrack['id']; };
 };
-type TRACKS_UPDATE = {
-    type: 'TRACKS_UPDATE'; payload: {
-        draft: SimpleTrack;
-    };
-};
 
+/* Ask Kamil ;-) */
+const TRACKS_UPDATE = 'TRACKS_UPDATE' as const;
+export const tracksUpdate = (draft: SimpleTrack) => ({
+    type: TRACKS_UPDATE, payload: { draft }
+})
+type TRACKS_UPDATE = ReturnType<typeof tracksUpdate>
 
 type Actions =
     | PLAYLISTS_LOAD
@@ -83,9 +84,6 @@ export const tracksPlaylistsSelect = (id: Playlist['id']): PLAYLISTS_SELECT => (
 export const tracksSelect = (track: SimpleTrack): TRACKS_SELECT => ({
     type: 'TRACKS_SELECT', payload: { id: track.id }
 })
-export const tracksUpdate = (draft: SimpleTrack): TRACKS_UPDATE => ({
-    type: 'TRACKS_UPDATE', payload: { draft }
-})
 
 /* Selectors */
 export const selectPlaylists = (state: AppState) => state.playlists.items
@@ -112,3 +110,28 @@ function reduceTracks(state: { [k: string]: SimpleTrack }, tracks: SimpleTrack[]
         return tracks;
     }, state)
 }
+
+/* Create Action Helper */
+/* https://redux-toolkit.js.org/api/createReducer */
+
+function createAction<T>(type: string) {
+    const actionCreator = (payload: T) => ({
+        type,
+        payload
+    })
+    actionCreator.type = type;
+
+    return actionCreator
+}
+
+const increment = createAction<number>('increment')
+const action = increment(123)
+
+// dispatch
+
+switch (action.type) {
+    case increment.type: {
+        action.payload.toExponential()
+    }
+}
+
