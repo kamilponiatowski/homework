@@ -1,21 +1,24 @@
 // tsrcc
 import React, { Component } from 'react'
+import { connect, MapStateToPropsParam } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 import { SearchForm } from '../../core/components/SearchForm'
 import { UserContext } from '../../core/contexts/UserContext'
+import { selectPlaylists } from '../../core/reducers/PlaylistsReducer'
+import { selectPlaylist, selectSelectedTrack } from '../../core/reducers/TracksReducer'
 import { Playlist } from '../../model/Playlist'
 import { SimpleTrack, Track } from '../../model/Search'
-import { store } from '../../store'
+import { AppState, store } from '../../store'
 import SelectPlaylist from '../components/SelectPlaylist'
 import TrackDetails from '../components/TrackDetails'
 import TrackForm from '../components/TrackForm'
 import TracksList from '../components/TracksList'
 
 
-
 interface Props extends RouteComponentProps {
     playlists: Playlist[]
     selectedPlaylist?: Playlist
+    selectedPlaylistTracks?: SimpleTrack[]
     selectedTrack?: SimpleTrack
 }
 interface State { }
@@ -61,6 +64,22 @@ export default class PlaylistTracks extends Component<Props, State> {
         )
     }
 }
+
+
+type PropsFromState = { playlists: Playlist[] };
+type PropsNotFromState = {}
+
+const mapStateToProps: MapStateToPropsParam<PropsFromState, PropsNotFromState, AppState> = state => ({
+    playlists: selectPlaylists(state),
+    selectedPlaylist: selectPlaylist(state),
+    selectedTrack: selectSelectedTrack(state),
+    selectedPlaylistTracks: selectSelectedTrack(state)
+})
+
+const withPlaylistsRedux = connect(mapStateToProps)
+
+// export const PlaylistTracksWithRedux = withPlaylistsRedux(PlaylistTracks)
+export const PlaylistTracksWithRedux = connect(mapStateToProps)(PlaylistTracks)
 
 
 

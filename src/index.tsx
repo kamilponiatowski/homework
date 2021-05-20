@@ -51,7 +51,7 @@ reportWebVitals()
 const data: Playlist[] = [
   {
     id: '123',
-    name: 'Playlista 😇',
+    name: 'Playlista Redux 123 😇',
     public: true,
     description: 'no i co ja dzis polubie?..🤔',
     tracks: [
@@ -62,7 +62,7 @@ const data: Playlist[] = [
   },
   {
     id: '234',
-    name: 'Playlista 😁',
+    name: 'Playlista  Redux 234 😁',
     public: false,
     description: 'moze polubię TypeScript?. 🚀',
     tracks: [
@@ -73,7 +73,7 @@ const data: Playlist[] = [
   },
   {
     id: '345',
-    name: 'Playlista 😆',
+    name: 'Playlista  Redux 345 😆',
     public: true,
     description: 'albo wszystko polubię co mi tam 😅💖',
     tracks: [
