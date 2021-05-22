@@ -84,8 +84,8 @@ export const AlbumDetails = (props: Props) => {
                     <h3>Tracks</h3>
                     <div className="list-group">
 
-                        {album.tracks.items.map(track =>
-                            <div className="list-group-item">
+                        {album.tracks?.items.map(track =>
+                            <div className="list-group-item" key={track.id}>
                                 {track.name} <button className="btn btn-light float-right"
                                     onClick={() => addToPlaylist(track)}>+</button>
                             </div>

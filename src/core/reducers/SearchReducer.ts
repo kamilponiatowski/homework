@@ -125,3 +125,21 @@ export const selectAlbumFetchState = (state: AppState) => state.search
 export const selectAlbum = (state: AppState) => {
     return state.search.albumId ? state.search.entities[state.search.albumId] : undefined
 }
+
+
+
+// [{type:'Action1'},{type:'Action2'},{type:'Action3'},]
+
+// const multistep = param => (dispatch) => {
+
+//     dispatch({type:'Action1'}))
+    
+//     return (dispatch) => {
+//         dispatch({type:'Action2'}))
+
+//         return (dispatch) => {
+//             dispatch({type:'Action3'}))
+
+//         }
+//     }
+// }
