@@ -14,6 +14,13 @@ export const fetchPlaylists = (): Promise<Playlist[]> => {
 
 }
 
+export const updatePlaylistDetails = (draft: Playlist) => {
+    return axios.put(`https://api.spotify.com/v1/playlists/${draft.id}`, {
+        name: draft.name,
+        public: draft.public,
+        description: draft.description,
+    }).then(() => draft)
+}
 
 
 export const fetchPlaylist = (id: Playlist['id']): Promise<Playlist> => {

@@ -8,7 +8,12 @@ export const auth = new AuthService({
     client_id: '145df2ed82034af5b08e928c183b6d00',
     redirect_uri: 'http://localhost:3000/',
     response_type: 'token',
-    scope: '',
+    scope: [
+        'playlist-modify-public',
+        'playlist-modify-private',
+        'playlist-read-private',
+        'playlist-read-collaborative'
+    ].join(' '),
     show_dialog: 'true'
 });
 

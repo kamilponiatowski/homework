@@ -46,7 +46,14 @@ const reducer: Reducer<TracksState, Actions> = (
         case 'PLAYLISTS_LOAD': return {
             ...state,
             tracks: action.payload.items.reduce((tracks, playlist) => {
-                return reduceTracks(tracks, playlist.tracks || [])
+                let items: SimpleTrack[] = []
+                if (!(playlist.tracks instanceof Array)) {
+                    tracks = (playlist.tracks as any).items || [];
+                }else{
+                    items = playlist.tracks
+                }
+
+                return reduceTracks(tracks, items || [])
             }, state.tracks)
         }
         case 'TRACKS_SELECT': return {

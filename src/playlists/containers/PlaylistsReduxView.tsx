@@ -8,7 +8,7 @@ import { PlaylistList } from '../components/PlaylistList'
 import { Route, Switch, useHistory, useLocation, useParams } from 'react-router'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { AppState } from '../../store'
-import { playlistsAdd, playlistsRemove, playlistsSelect, playlistsUpdate } from '../../core/reducers/PlaylistsReducer'
+import { playlistsAdd, playlistsRefresh, playlistsRemove, playlistsSave, playlistsSelect, playlistsUpdate } from '../../core/reducers/PlaylistsReducer'
 
 interface Props { }
 
@@ -18,8 +18,6 @@ const data: Playlist[] = []
 export const PlaylistsReduxView = (props: Props) => {
     const [filter, setFilter] = useState('')
 
-    // Store
-    // useStore()
     const dispatch = useDispatch()
     const playlists = useSelector((state: AppState) =>
         state.playlists.items)
@@ -30,7 +28,9 @@ export const PlaylistsReduxView = (props: Props) => {
     // Router
     const { replace, push } = useHistory()
     const { playlist_id } = useParams<{ playlist_id: string }>()
+
     useEffect(() => { dispatch(playlistsSelect(playlist_id)) }, [playlist_id])
+    useEffect(() => { dispatch(playlistsRefresh()) }, [])
 
     const changeSelectedPlaylist = useCallback((id: Playlist['id']) => { push('/playlists/' + id + '/') }, [])
 
@@ -38,14 +38,15 @@ export const PlaylistsReduxView = (props: Props) => {
 
     const cancel = useCallback(() => { replace(`/playlists/${playlist_id}/`) }, [playlist_id])
 
+
     // Updating playlists   
     const saveChangedPlaylist = useCallback((draft: Playlist) => {
         if (draft.name.length < 3) { return [new Error('Too short!')] }
-        dispatch(playlistsUpdate(draft))
+        dispatch(playlistsSave(draft))
         replace('/playlists/' + draft.id + '/')
         return null
     }, [])
-    
+
 
     const saveNewPlaylist = useCallback((draft: Playlist) => {
         if (draft.name.length < 3) {

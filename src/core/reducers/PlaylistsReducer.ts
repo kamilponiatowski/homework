@@ -7,11 +7,19 @@ import { PLAYLISTS_LOAD, PLAYLISTS_SELECT, TRACKS_ADD_TO_PLAYLIST } from "./acti
 
 export interface PlaylistsState {
     items: Playlist[]
-    selectedId?: Playlist['id']
+    selectedId?: Playlist['id'],
+    message?: string
 }
 
+export type PLAYLISTS_REFRESH = {
+    type: 'PLAYLISTS_REFRESH'
+};
 type PLAYLISTS_UPDATE = {
     type: 'PLAYLISTS_UPDATE'; payload: { playlist: Playlist; };
+};
+
+export type PLAYLISTS_SAVE = {
+    type: 'PLAYLISTS_SAVE'; payload: { draft: Playlist; };
 };
 
 type PLAYLISTS_ADD = {
@@ -25,9 +33,13 @@ type PLAYLISTS_REMOVE_TRACK = {
 type PLAYLISTS_REMOVE = {
     type: 'PLAYLISTS_REMOVE'; payload: { id?: Playlist['id']; };
 };
+type PLAYLISTS_ERROR = {
+    type: 'PLAYLISTS_ERROR'; payload: { error?: Error; };
+};
 
 
 type Actions =
+    | PLAYLISTS_ERROR
     | PLAYLISTS_LOAD
     | PLAYLISTS_SELECT
     | PLAYLISTS_UPDATE
@@ -35,10 +47,12 @@ type Actions =
     | PLAYLISTS_REMOVE
     | TRACKS_ADD_TO_PLAYLIST
     | PLAYLISTS_REMOVE_TRACK
+    | PLAYLISTS_REFRESH
 
 const initialState: PlaylistsState = {
     items: [],
-    selectedId: undefined
+    selectedId: undefined,
+    message: ''
 }
 
 const reducer: Reducer<PlaylistsState, Actions> = (
@@ -48,6 +62,9 @@ const reducer: Reducer<PlaylistsState, Actions> = (
     switch (action.type) {
         case 'PLAYLISTS_LOAD': return {
             ...state, items: action.payload.items
+        }
+        case 'PLAYLISTS_ERROR': return {
+            ...state, message: action.payload.error?.message
         }
         case 'PLAYLISTS_SELECT': return {
             ...state, selectedId: action.payload.id
@@ -106,9 +123,18 @@ export const playlistSave = (dispatch: ThunkDispatch<AppState, any, any>) => {
 
 // export fetchPlalyistAction = (dispatch...
 
-export const playlistsLoad = (items: Playlist[]): PLAYLISTS_LOAD => ({
-    type: 'PLAYLISTS_LOAD', payload: { items }
+export const playlistsRefresh = (): PLAYLISTS_REFRESH => ({
+    type: 'PLAYLISTS_REFRESH'
 })
+export const playlistsError = (error: any): PLAYLISTS_ERROR => ({
+    type: 'PLAYLISTS_ERROR', payload: { error }
+})
+export const playlistsLoad = (items: Playlist[]): PLAYLISTS_LOAD => {
+
+    return ({
+        type: 'PLAYLISTS_LOAD', payload: { items }
+    })
+}
 export const playlistsSelect = (id: Playlist['id']): PLAYLISTS_SELECT => ({
     type: 'PLAYLISTS_SELECT', payload: { id }
 })
@@ -117,6 +143,9 @@ export const playlistsTrackRemove = (id: Playlist['id']): PLAYLISTS_REMOVE_TRACK
 })
 export const playlistsRemove = (id: Playlist['id']): PLAYLISTS_REMOVE => ({
     type: 'PLAYLISTS_REMOVE', payload: { id }
+})
+export const playlistsSave = (playlist: Playlist): PLAYLISTS_SAVE => ({
+    type: 'PLAYLISTS_SAVE', payload: { draft: playlist }
 })
 export const playlistsUpdate = (playlist: Playlist): PLAYLISTS_UPDATE => ({
     type: 'PLAYLISTS_UPDATE', payload: { playlist }
