@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router'
 import { ThunkDispatch } from 'redux-thunk';
 import { SearchForm } from '../../core/components/SearchForm';
 import { fetchAlbums } from '../../core/hooks/useSearchAlbums';
-import { searchFailed, searchStart, searchSuccess, selectSearchQuery, selectSearchResults, selectSearchState } from '../../core/reducers/SearchReducer';
+import { searchFailed, searchStart, searchStartMakeThunk, searchSuccess, selectSearchQuery, selectSearchResults, selectSearchState } from '../../core/reducers/SearchReducer';
 import { AppState } from '../../store';
 import { AlbumGrid } from '../components/AlbumGrid';
 
@@ -26,10 +26,14 @@ export const MusicSearchView = (props: Props) => {
         const q = new URLSearchParams(searchParams.slice(1)).get('q')
         if (!q) { return; }
         window.document.title = 'Searching ' + q;
-        
-        (dispatch(searchStart(q)) as any).then(() => {
-            console.log('Thunk finished')
-        })
+
+
+        // dispatch({type:'START_SEARCH'}) -> _SUCEESS -> _FAILED -> .. 
+        dispatch(searchStart(q))
+
+        // (dispatch(searchStartMakeThunk(q)) as any).then(() => {
+        //     console.log('Thunk finished')
+        // })
 
     }, [searchParams])
 

@@ -25,7 +25,7 @@ type FETCH_ALBUM_START = { type: 'FETCH_ALBUM_START', payload: { id: Album['id']
 type FETCH_ALBUM_SUCCESS = { type: 'FETCH_ALBUM_SUCCESS', payload: { result: Album } }
 type FETCH_ALBUM_FAILED = { type: 'FETCH_ALBUM_FAILED', payload: { error: Error } }
 
-type SEARCH_START = { type: 'SEARCH_START', payload: { query: string } }
+export type SEARCH_START = { type: 'SEARCH_START', payload: { query: string } }
 type SEARCH_SUCCESS = { type: 'SEARCH_SUCCESS', payload: { results: Album[] } }
 type SEARCH_FAILED = { type: 'SEARCH_FAILED', payload: { error: Error } }
 
@@ -89,16 +89,17 @@ export default reducer as () => SearchState
 
 /* Action Creators */
 // export const searchStart = (dispatch: Dispatch) => (query: string) => {
-export const searchStart =
+export const searchStartMakeThunk =
     // (query: string): ThunkAction<Promise<SEARCH_SUCCESS | SEARCH_FAILED>, AppState, void, any> => (dispatch):Promise<any> => {
     (query: string) => (dispatch: Dispatch) => {
 
-        dispatch({ type: 'SEARCH_START', payload: { query } })
+        dispatch(searchStart(query))
         return fetchAlbums(query)
             .then(res => dispatch(searchSuccess(res)))
             .catch(error => dispatch(searchFailed(error)))
 
     }
+export const searchStart = (query: string): SEARCH_START => ({ type: 'SEARCH_START', payload: { query } })
 export const searchSuccess = (results: Album[]): SEARCH_SUCCESS => ({ type: 'SEARCH_SUCCESS', payload: { results } })
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })
 

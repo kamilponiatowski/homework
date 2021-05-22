@@ -173,3 +173,11 @@ https://github.com/acdlite/recompose
 
 ## Middleware
 https://redux.js.org/understanding/history-and-design/middleware
+https://github.com/reduxjs/redux-thunk
+
+https://www.npmjs.com/package/redux-logger
+https://www.npmjs.com/package/redux-api-middleware
+https://awesomeopensource.com/project/buunguyen/redux-freeze
+https://awesomeopensource.com/project/svrcekmichal/redux-axios-middleware
+
+https://github.com/pburtchaell/redux-promise-middleware/blob/HEAD/docs/introduction.md

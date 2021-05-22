@@ -1,4 +1,5 @@
-import { Reducer } from "redux"
+import { Dispatch, Reducer } from "redux"
+import { ThunkDispatch } from "redux-thunk";
 import { Playlist } from "../../model/Playlist";
 import { SimpleTrack } from "../../model/Search";
 import { AppState } from "../../store";
@@ -93,6 +94,17 @@ const reducer: Reducer<PlaylistsState, Actions> = (
 }
 export default reducer
 
+
+export const playlistSave = (dispatch: ThunkDispatch<AppState, any, any>) => {
+    // loading = true
+    // saveToServer.then ...
+    //// // fetchById.then
+    // fetchAllPlaylists.then
+    // dispatch(fetchPlalyistAction(id))
+    // selectPlaylist.then
+}
+
+// export fetchPlalyistAction = (dispatch...
 
 export const playlistsLoad = (items: Playlist[]): PLAYLISTS_LOAD => ({
     type: 'PLAYLISTS_LOAD', payload: { items }
