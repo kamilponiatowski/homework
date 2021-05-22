@@ -5,6 +5,8 @@ import playlists, { } from "./core/reducers/PlaylistsReducer";
 import search from "./core/reducers/SearchReducer";
 import tracks from "./core/reducers/TracksReducer";
 
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 // const initialState = {
 //     counter: 0,
@@ -31,37 +33,32 @@ const reducer = combineReducers({
 
 export type AppState = ReturnType<typeof reducer>
 
-const logMiddleware: Middleware = (api: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
-    // api.getState()
-    // if(action.type !=='SEARCH_START')
-    action = next(action)
-    console.log('[Action]', action?.type, action)
-    console.log('[State]', api.getState())
-}
-
-const asyncThunkMiddleware: Middleware = (api: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
-    if (typeof action === 'function') {
-        action(api.dispatch)
-    } else {
-        next(action)
-    }
-}
-
-// // Chain of responsibility pattern
-// store.dispatch = midA.dispatch 
-// midA.next = midB
-// midB.next = midC 
-// midC.next = reducer
-
 
 const middleware: Middleware[] = [
-    asyncThunkMiddleware,
-    logMiddleware,
+    // asyncThunkMiddleware,
+    // logMiddleware,
+    thunk,
+    logger
+    
 ];
 
-// const composeEnhancers = ((window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()) || compose
-// export const store = createStore(reducer, composeEnhancers(
 
 export const store = createStore(reducer, composeWithDevTools(
     applyMiddleware(...middleware)
-));
+    ));
+    
+    // const logMiddleware: Middleware = (api: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
+    //     action = next(action)
+    //     console.log('[Action]', action?.type, action)
+    //     console.log('[State]', api.getState())
+    // }
+    
+    // // dispatch --action--> middleware --action--> reducer
+    
+    // const asyncThunkMiddleware: Middleware = (api: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
+    //     if (typeof action === 'function') {
+    //         action(api.dispatch)
+    //     } else {
+    //         next(action)
+    //     }
+    // }

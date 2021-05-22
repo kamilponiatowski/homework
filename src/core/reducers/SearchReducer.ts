@@ -1,4 +1,5 @@
-import { Dispatch } from "redux";
+import { Action, ActionCreator, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { Album, AlbumView } from "../../model/Search";
 import { AppState } from "../../store";
 import { fetchAlbums } from "../hooks/useSearchAlbums";
@@ -88,14 +89,16 @@ export default reducer as () => SearchState
 
 /* Action Creators */
 // export const searchStart = (dispatch: Dispatch) => (query: string) => {
-export const searchStart = (query: string) => (dispatch: Dispatch) => {
+export const searchStart =
+    // (query: string): ThunkAction<Promise<SEARCH_SUCCESS | SEARCH_FAILED>, AppState, void, any> => (dispatch):Promise<any> => {
+    (query: string) => (dispatch: Dispatch) => {
 
-    dispatch({ type: 'SEARCH_START', payload: { query } })
-    fetchAlbums(query)
-        .then(res => dispatch(searchSuccess(res)))
-        .catch(error => dispatch(searchFailed(error)))
+        dispatch({ type: 'SEARCH_START', payload: { query } })
+        return fetchAlbums(query)
+            .then(res => dispatch(searchSuccess(res)))
+            .catch(error => dispatch(searchFailed(error)))
 
-}
+    }
 export const searchSuccess = (results: Album[]): SEARCH_SUCCESS => ({ type: 'SEARCH_SUCCESS', payload: { results } })
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })
 
@@ -133,7 +136,7 @@ export const selectAlbum = (state: AppState) => {
 // const multistep = param => (dispatch) => {
 
 //     dispatch({type:'Action1'}))
-    
+
 //     return (dispatch) => {
 //         dispatch({type:'Action2'}))
 

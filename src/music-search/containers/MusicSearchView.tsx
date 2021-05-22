@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router'
+import { ThunkDispatch } from 'redux-thunk';
 import { SearchForm } from '../../core/components/SearchForm';
 import { fetchAlbums } from '../../core/hooks/useSearchAlbums';
 import { searchFailed, searchStart, searchSuccess, selectSearchQuery, selectSearchResults, selectSearchState } from '../../core/reducers/SearchReducer';
@@ -24,8 +25,11 @@ export const MusicSearchView = (props: Props) => {
     useEffect(() => {
         const q = new URLSearchParams(searchParams.slice(1)).get('q')
         if (!q) { return; }
-        window.document.title = 'Searching ' + q
-        dispatch(searchStart(q))
+        window.document.title = 'Searching ' + q;
+        
+        (dispatch(searchStart(q)) as any).then(() => {
+            console.log('Thunk finished')
+        })
 
     }, [searchParams])
 

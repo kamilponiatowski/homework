@@ -170,3 +170,6 @@ https://redux.js.org/tutorials/fundamentals/part-4-store#middleware
 
 ## Higher ORder  Components
 https://github.com/acdlite/recompose
+
+## Middleware
+https://redux.js.org/understanding/history-and-design/middleware
