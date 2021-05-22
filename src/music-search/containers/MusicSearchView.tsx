@@ -24,10 +24,8 @@ export const MusicSearchView = (props: Props) => {
         if (!q) { return; }
         window.document.title = 'Searching ' + q
 
-        dispatch(searchStart(q))
-        fetchAlbums(q)
-            .then(res => dispatch(searchSuccess(res)))
-            .catch(error => dispatch(searchFailed(error)))
+        // dispatch(searchStart(q));
+        dispatch(searchStart(q,dispatch))
 
     }, [searchParams])
 

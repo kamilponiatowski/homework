@@ -1,5 +1,7 @@
+import { Dispatch } from "redux";
 import { Album, AlbumView } from "../../model/Search";
 import { AppState } from "../../store";
+import { fetchAlbums } from "../hooks/useSearchAlbums";
 
 interface SearchState {
     albumId?: Album['id']
@@ -59,7 +61,7 @@ const reducer = (
         }
         /* ====== One Album ===== */
         case 'FETCH_ALBUM_START': return {
-            ...state, albumId: action.payload.id, 
+            ...state, albumId: action.payload.id,
             //isLoading: true, message: ''
         }
         case 'FETCH_ALBUM_SUCCESS': return {
@@ -85,7 +87,14 @@ export default reducer as () => SearchState
 */
 
 /* Action Creators */
-export const searchStart = (query: string): SEARCH_START => ({ type: 'SEARCH_START', payload: { query } })
+export const searchStart = (query: string, dispatch: Dispatch) => {
+
+    dispatch({ type: 'SEARCH_START', payload: { query } })
+    fetchAlbums(query)
+        .then(res => dispatch(searchSuccess(res)))
+        .catch(error => dispatch(searchFailed(error)))
+
+}
 export const searchSuccess = (results: Album[]): SEARCH_SUCCESS => ({ type: 'SEARCH_SUCCESS', payload: { results } })
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })
 
@@ -113,5 +122,5 @@ export const selectSearchResults = (state: AppState): AlbumView[] => {
 
 export const selectAlbumFetchState = (state: AppState) => state.search
 export const selectAlbum = (state: AppState) => {
-    return state.search.albumId? state.search.entities[state.search.albumId] : undefined
+    return state.search.albumId ? state.search.entities[state.search.albumId] : undefined
 }
