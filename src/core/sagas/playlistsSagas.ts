@@ -29,6 +29,12 @@ function* savePlaylist(action: PLAYLISTS_SAVE) {
     }
 }
 
+// function* watchFetch() {
+//     while (yield take('PLAYLISTS_SAVE')) {
+//         yield call(fetchPosts) // waits for the fetchPosts task to terminate
+//     }
+// }
+
 export function* playlistsSaga() {
     yield takeLatest("PLAYLISTS_REFRESH", refreshPlaylists);
     yield takeLatest("PLAYLISTS_SAVE", savePlaylist);
