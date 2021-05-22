@@ -87,14 +87,14 @@ export default reducer as () => SearchState
 */
 
 /* Action Creators */
-export const searchStart = (dispatch: Dispatch) => (query: string) => {
+// export const searchStart = (dispatch: Dispatch) => (query: string) => {
+export const searchStart = (query: string) => (dispatch: Dispatch) => {
 
-    // dispatch({ type: 'SEARCH_START', payload: { query } })
+    dispatch({ type: 'SEARCH_START', payload: { query } })
     fetchAlbums(query)
         .then(res => dispatch(searchSuccess(res)))
         .catch(error => dispatch(searchFailed(error)))
 
-    return { type: 'SEARCH_START', payload: { query } }
 }
 export const searchSuccess = (results: Album[]): SEARCH_SUCCESS => ({ type: 'SEARCH_SUCCESS', payload: { results } })
 export const searchFailed = (error: Error): SEARCH_FAILED => ({ type: 'SEARCH_FAILED', payload: { error } })

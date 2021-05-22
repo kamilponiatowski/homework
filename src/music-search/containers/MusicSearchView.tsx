@@ -18,15 +18,14 @@ export const MusicSearchView = (props: Props) => {
     const { isLoading, message } = useSelector(selectSearchState)
     const query = useSelector(selectSearchQuery)
     const results = useSelector(selectSearchResults)
-    
-    const searchStartDispatch = useCallback(searchStart(dispatch), [])
+
+    // const searchStartDispatch = useCallback(searchStart(dispatch), [])
 
     useEffect(() => {
         const q = new URLSearchParams(searchParams.slice(1)).get('q')
         if (!q) { return; }
         window.document.title = 'Searching ' + q
-        // dispatch(searchStart(q));
-        dispatch(searchStartDispatch(q))
+        dispatch(searchStart(q))
 
     }, [searchParams])
 
