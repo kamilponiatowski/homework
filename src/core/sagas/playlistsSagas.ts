@@ -10,23 +10,21 @@ import { searchFailed, searchSuccess, SEARCH_START } from '../reducers/SearchRed
 function* refreshPlaylists(action: PLAYLISTS_REFRESH) {
     try {
         const results: Playlist[] = yield call(fetchPlaylists);
-        debugger
         yield put(playlistsLoad(results))
-    } catch (error) {debugger
+    } catch (error) {
         yield put(playlistsError(error))
     }
 }
 
 
 function* savePlaylist(action: PLAYLISTS_SAVE) {
-    debugger
     try {
         const result: Playlist = yield call(updatePlaylistDetails, action.payload.draft);
         yield put(playlistsUpdate(result))
         yield put(playlistsRefresh())
         yield put(playlistsSelect(result.id))
 
-    } catch (error) {debugger
+    } catch (error) {
         yield put(playlistsError(error))
     }
 }

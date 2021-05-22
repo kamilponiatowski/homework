@@ -91,12 +91,15 @@ export default reducer as () => SearchState
 // export const searchStart = (dispatch: Dispatch) => (query: string) => {
 export const searchStartMakeThunk =
     // (query: string): ThunkAction<Promise<SEARCH_SUCCESS | SEARCH_FAILED>, AppState, void, any> => (dispatch):Promise<any> => {
-    (query: string) => (dispatch: Dispatch) => {
+    (query: string) => async (dispatch: Dispatch) => {
 
-        dispatch(searchStart(query))
-        return fetchAlbums(query)
-            .then(res => dispatch(searchSuccess(res)))
-            .catch(error => dispatch(searchFailed(error)))
+        try {
+            dispatch(searchStart(query))
+            const res = await fetchAlbums(query)
+            dispatch(searchSuccess(res))
+        } catch (error) {
+            dispatch(searchFailed(error))
+        }
 
     }
 export const searchStart = (query: string): SEARCH_START => ({ type: 'SEARCH_START', payload: { query } })
