@@ -13,11 +13,12 @@ import { PlaylistsReduxView } from './playlists/containers/PlaylistsReduxView';
 import { PlaylistTracksHooks } from './playlists/containers/PlaylistTracksHooks';
 import { AlbumDetails } from './music-search/containers/AlbumDetails';
 import { CounterPage } from './core/containers/Counter';
+import Services from './todo/Services';
 
 function App() {
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       {/* .container>.row>.col */}
       <div className="container">
         <div className="row">
@@ -31,8 +32,20 @@ function App() {
               <Route path="/tracks/" component={PlaylistTracksWithRedux} />
               <Route path="/search" component={MusicSearchView} />
               <Route path="/counter" component={CounterPage} />
+              <Route path="/services" component={Services} />
               <Route path="*" render={() => <h1>Page Not Found</h1>} />
             </Switch>
+
+            {/* <Switch>
+              <Redirect path="/" exact={true} to="/playlists" />
+              <Route path="/playlists/:playlist_id/" component={PlaylistsReduxView} />
+              <Route path="/albums/:album_id/" component={AlbumDetails} />
+              <Route path="/playlists/" component={PlaylistsReduxView} />
+              <Route path="/tracks/" component={PlaylistTracksWithRedux} />
+              <Route path="/search" component={MusicSearchView} />
+              <Route path="/counter" component={CounterPage} />
+              <Route path="*" render={() => <h1>Page Not Found</h1>} />
+            </Switch> */}
 
           </div>
         </div>
